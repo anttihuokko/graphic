@@ -1,4 +1,4 @@
-import './../asset/Chart.css'
+import './../assets/Chart.css'
 
 export * from './model/Color'
 export * from './model/Time'

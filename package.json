@@ -1,7 +1,7 @@
 {
   "name": "@anttihuokko/graphic",
-  "version": "0.0.1",
-  "description": "Lib for creating SVG graphic",
+  "version": "0.0.2",
+  "description": "Lib for creating SVG graphs",
   "author": "Antti Huokko",
   "license": "ISC",
   "type": "module",
