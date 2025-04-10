@@ -1,0 +1,53 @@
+{
+  "name": "@anttihuokko/graphic",
+  "version": "0.0.1",
+  "description": "Lib for creating SVG graphic",
+  "author": "Antti Huokko",
+  "license": "ISC",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anttihuokko/graphic.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "README.md",
+    "package.json",
+    "dist/*"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "jest --watch",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@svgdotjs/svg.js": "3.2.4",
+    "lodash": "^4.17.21",
+    "luxon": "^3.6.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.16",
+    "@types/luxon": "^3.6.2",
+    "@types/node": "^22.14.0",
+    "@types/jest": "^29.5.14",
+    "@swc/core": "^1.11.18",
+    "eslint": "^9.24.0",
+    "@eslint/js": "^9.24.0",
+    "globals": "^16.0.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "typescript-eslint": "^8.29.1",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.1",
+    "ts-node": "^10.9.2",
+    "jest-junit": "^16.0.0",
+    "typescript": "^5.8.3"
+  }
+}
