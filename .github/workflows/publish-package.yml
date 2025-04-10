@@ -1,0 +1,41 @@
+name: Publish Package
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          registry-url: https://npm.pkg.github.com/
+      - name: Install NPM dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test -- --watch=false --watchAll=false --reporters=jest-junit
+      - name: Store test results
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: test-results
+          path: junit.xml
+      - name: Create test report
+        uses: dorny/test-reporter@v2
+        if: success() || failure()
+        with:
+          name: JUnit Tests
+          path: junit.xml
+          reporter: jest-junit
+      - name: Run build
+        run: npm run build
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
