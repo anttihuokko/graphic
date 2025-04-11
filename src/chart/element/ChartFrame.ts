@@ -92,7 +92,7 @@ export abstract class ChartFrame extends ChartElement<PanelContext> {
     this.context.addEventListener(EventType.REPOSITION, () => this.refresh())
     this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh())
     this.context.addEventListener(EventType.REDRAW, () => this.refresh())
-    this.context.addEventListener(EventType.VIEW_OFFSET, () => this.refresh())
+    this.context.addEventListener(EventType.VIEW_OFFSET, () => this.refresh()) // TODO This causes a lot of refresh calls. Is it really needed?
     this.refresh()
   }
 

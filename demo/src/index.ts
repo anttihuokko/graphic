@@ -1,68 +1,44 @@
-import { BarChartDrawer, Color, CustomChartDrawer, Duration, LineChartDrawer, Time, TimeSeriesChart } from '../../src'
-import { createDataSource } from './DataSource'
+import { component as component1 } from './gap-test'
+import { component as component2 } from './custom-test'
 
-function component() {
-  console.log('--- INIT CHART')
+export type TestComponent = {
+  title: string
+  create: (container: HTMLDivElement) => void
+}
+
+const components: TestComponent[] = [component1, component2]
+
+function component(): HTMLElement {
+  const params = new URLSearchParams(window.location.search)
+  const componentId = Number(params.get('c') ?? 1)
   const container = document.createElement('div')
-
-  container.setAttribute('style', 'height: 800px;')
-
-  const chart = new TimeSeriesChart(container, Duration.forDays(1), createDataSource())
-  chart.updateSettings({
-    gapsRemoved: true,
-    gapsVisualized: true,
-    debugInfoVisible: false,
-  })
-  chart.addPanel([new BarChartDrawer('Bars', Color.GREEN, 'value1'), createCustomChartDrawerForGapTest2()])
-  chart.addPanel([new LineChartDrawer('Line', Color.GREEN, 'value2')])
-  /*
-      chart.listen('gclick', (event: GraphicClickEvent) => {
-        // console.log(event)
-        // console.log(event.getDocumentPoint())
-        console.log('Result', event.getTargetElements())
-      })
-      */
-  /*
-      const group = chart.svg.group().addClass('test0')
-      group.rect(100, 100).addClass('test1').fill('#f06')
-      group.circle(100, 100).addClass('test2').move(50, 50).fill('blue')
-      group.circle(3, 3).addClass('test3').move(60, 60).fill('black')
-      group.text("Hello").addClass('test4').move(40, 70)
-      */
-  chart.moveCenterToTime(Time.fromISO('2021-06-10'))
-
+  container.appendChild(createTestComponentSelect(componentId))
+  const component = components[componentId - 1]
+  if (component) {
+    const graphicContainer = document.createElement('div')
+    graphicContainer.style.height = '90vh'
+    container.appendChild(graphicContainer)
+    component.create(graphicContainer)
+  }
   return container
 }
 
-/*
-  function getGapTimesForTest1(): DateTime[] {
-    return [DateTime.utc(2021, 6, 11), DateTime.utc(2021, 6, 12)]
+function createTestComponentSelect(selectedComponentId: number): HTMLSelectElement {
+  const select = document.createElement('select')
+  select.onchange = () => {
+    const params = new URLSearchParams()
+    params.set('c', select.value)
+    window.location.search = params.toString()
   }
-  */
-
-/*
-  function createCustomChartDrawerForGapTest1(): CustomChartDrawer {
-    const drawer = new CustomChartDrawer('Test', Color.RED)
-    drawer.addHorizontalLines([1000])
-    drawer.addCircleMarker({ time: Time.fromISO('2021-06-02'), value: 1000 })
-    drawer.addCircleMarker({ time: Time.fromISO('2021-06-10'), value: 100 })
-    drawer.addCircleMarker({ time: Time.fromISO('2021-06-13'), value: 100 })
-    drawer.addCircleMarker({ time: Time.fromISO('2021-06-17'), value: 1000 })
-    drawer.addCircleMarker({ time: Time.fromISO('2021-06-19'), value: 2000 })
-    return drawer
+  for (let index = 0; index < components.length; index++) {
+    const option = document.createElement('option')
+    const componentId = index + 1
+    option.value = String(componentId)
+    option.text = components[index].title
+    option.selected = selectedComponentId === componentId
+    select.appendChild(option)
   }
-  */
-
-function createCustomChartDrawerForGapTest2(): CustomChartDrawer {
-  const drawer = new CustomChartDrawer('Test', Color.RED)
-  drawer.addHorizontalLines([1000])
-  drawer.addCircleMarker({ time: Time.fromISO('2021-05-21'), value: 1000 })
-  drawer.addCircleMarker({ time: Time.fromISO('2021-05-27'), value: 100 })
-  drawer.addCircleMarker({ time: Time.fromISO('2021-06-02'), value: 100 })
-  drawer.addCircleMarker({ time: Time.fromISO('2021-06-06'), value: 200 })
-  drawer.addCircleMarker({ time: Time.fromISO('2021-06-14'), value: 200 })
-  drawer.addCircleMarker({ time: Time.fromISO('2021-06-18'), value: 1000 })
-  return drawer
+  return select
 }
 
 document.body.appendChild(component())

@@ -42,10 +42,7 @@ class LegendItem extends ChartFrame {
       ])
       .move(LegendItem.MARGIN1, LegendItem.MARGIN1)
       .fill(def.color2.value)
-    this.itemName = this.container
-      .text(def.label)
-      .addClass('chart-legend-item-name')
-      .move(LegendItem.COLOR_BOX_SIZE + LegendItem.MARGIN2, LegendItem.MARGIN1)
+    this.itemName = this.container.text(def.label).addClass('chart-legend-item-name')
     this.itemInfo = this.container.text('').addClass('chart-legend-item-info')
     this.context.addEventListener(EventType.REDRAW, () => this.handleRedraw())
     this.handleRedraw()
@@ -80,6 +77,7 @@ class LegendItem extends ChartFrame {
 
   protected positionElements(): Box {
     if (this.itemName) {
+      this.itemName.move(LegendItem.COLOR_BOX_SIZE + LegendItem.MARGIN2, LegendItem.MARGIN1)
       const itemNameBounds = this.itemName.bbox()
       this.itemInfo.move(itemNameBounds.x2 + LegendItem.MARGIN2, LegendItem.MARGIN1 + 1)
       const itemInfoBounds = this.itemInfo.bbox()

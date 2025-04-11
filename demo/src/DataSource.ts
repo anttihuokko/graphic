@@ -30,6 +30,12 @@ export function createDataSource(): TimeSeriesDataSource {
   }
 }
 
+/*
+  function getGapTimesForTest1(): DateTime[] {
+    return [DateTime.utc(2021, 6, 11), DateTime.utc(2021, 6, 12)]
+  }
+*/
+
 function getGapTimesForTest2(): DateTime[] {
   return [
     DateTime.utc(2021, 5, 28),

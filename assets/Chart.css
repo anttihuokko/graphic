@@ -190,6 +190,7 @@ symbol text {
   font-size: 12px;
   font-weight: bold;
   fill: #5f5f5f;
+  font-family: 'Helvetica';
 }
 
 .chart-legend-item {
