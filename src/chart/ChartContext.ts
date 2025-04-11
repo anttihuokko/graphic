@@ -104,7 +104,12 @@ export class ChartContext extends Context {
   private createDimensions(viewSize: Size, labelSize: Size): Dimensions {
     return new Dimensions(
       labelSize,
-      new Box(1, 1, viewSize.width - labelSize.width, viewSize.height - labelSize.height * 1.5),
+      new Box(
+        1,
+        1,
+        Math.max(viewSize.width - labelSize.width, 5),
+        Math.max(viewSize.height - labelSize.height * 1.5, 5)
+      ),
       viewSize
     )
   }

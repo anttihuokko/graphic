@@ -5,7 +5,7 @@ import tseslint from 'typescript-eslint'
 import prettierPlugin from 'eslint-plugin-prettier'
 
 export default defineConfig([
-  globalIgnores(['dist/**']),
+  globalIgnores(['dist/**', 'demo/dist/**']),
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     plugins: { js, prettier: prettierPlugin },
@@ -14,7 +14,7 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*.mjs', '*.ts'],
+          allowDefaultProject: ['*.mjs', '*.ts', 'demo/*.mjs'],
         },
         tsconfigRootDir: import.meta.dirname,
       },

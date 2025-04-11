@@ -53,11 +53,11 @@ export class Dimensions {
   }
 
   get marginRight(): number {
-    return this.viewWidth - this.drawAreaRight
+    return Math.max(this.viewWidth - this.drawAreaRight, 0)
   }
 
   get marginBottom(): number {
-    return this.viewHeight - this.drawAreaBottom
+    return Math.max(this.viewHeight - this.drawAreaBottom, 0)
   }
 
   get labelWidth(): number {
