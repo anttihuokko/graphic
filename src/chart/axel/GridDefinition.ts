@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import { parseInt, repeat, toString, chain } from 'lodash'
 import { Range } from '../../model/Range'
 
 export interface GridDefinition {
@@ -44,8 +44,8 @@ function getGridIntervalSize(
   multipliers: number[]
 ): number {
   const preferredIntervalSize = Math.round(valueRange.size / (totalGridPixels / preferredIntervalPixels))
-  const intervalRangeMagnitude = _.parseInt('1' + _.repeat('0', _.toString(preferredIntervalSize).length - 1))
-  return _.chain(multipliers)
+  const intervalRangeMagnitude = parseInt('1' + repeat('0', toString(preferredIntervalSize).length - 1))
+  return chain(multipliers)
     .map((multiplier) => intervalRangeMagnitude * multiplier)
     .map((intervalSize) => ({ intervalSize: intervalSize, offset: Math.abs(intervalSize - preferredIntervalSize) }))
     .minBy('offset')

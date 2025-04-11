@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import { uniqueId } from 'lodash'
 import { TimeSeriesItem, TimeSeriesSection, toTimeSeriesItems } from './TimeSeries'
 import { TimeSeriesDataSource } from './TimeSeriesDataSource'
 import { Time } from '../../model/Time'
@@ -25,7 +25,7 @@ export class TimeSeriesDataRequest {
     )
   }
 
-  readonly id: string = _.uniqueId('REQUEST-')
+  readonly id: string = uniqueId('REQUEST-')
 
   private constructor(
     readonly type: TimeSeriesDataRequestType,

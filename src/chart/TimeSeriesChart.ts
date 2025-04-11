@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import { throttle } from 'lodash'
 import { G } from '@svgdotjs/svg.js'
 import {
   GraphicClickEvent,
@@ -24,9 +24,9 @@ import { Interval } from '../model/Interval'
 import { ChartSettings, DEFAULT_CHART_SETTINGS } from './ChartSettings'
 
 export class TimeSeriesChart extends Chart {
-  private readonly handleHoverEventThrottled = _.throttle(this.handleHoverEvent, 50)
+  private readonly handleHoverEventThrottled = throttle(this.handleHoverEvent, 50)
 
-  private readonly zoomXAxelThrottled = _.throttle(this.zoomXAxel, 50)
+  private readonly zoomXAxelThrottled = throttle(this.zoomXAxel, 50)
 
   private readonly xAxel: XAxel
 

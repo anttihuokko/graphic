@@ -1,11 +1,11 @@
-import * as _ from 'lodash'
+import { has, get, chain } from 'lodash'
 import { MathUtil } from '../../internal/MathUtil'
 import { Time, Duration } from '../../model/Time'
 import { Interval } from '../../model/Interval'
 import { DateTime } from 'luxon'
 
 export function toTimeSeriesItems(timeField: string, data: unknown[]) {
-  return _.chain(data)
+  return chain(data)
     .map((entry) => new TimeSeriesItem(timeField, entry))
     .uniqBy((item) => item.timestamp)
     .sortBy((item) => item.timestamp)
@@ -125,7 +125,7 @@ export class TimeSeriesItem implements DataAccessor {
   }
 
   hasAllValues(fields: string[]): boolean {
-    return fields.filter((field) => _.has(this.data, field)).length === fields.length
+    return fields.filter((field) => has(this.data, field)).length === fields.length
   }
 
   getNumberValue(field: string, defaultValue: number | null = null): number {
@@ -145,7 +145,7 @@ export class TimeSeriesItem implements DataAccessor {
     typeName: N,
     defaultValue: T | null = null
   ): T {
-    const value = (_.get(this.data, field) as unknown) ?? defaultValue
+    const value = (get(this.data, field) as unknown) ?? defaultValue
     if (value == null) {
       throw Error(`No data value exist for field '${field}' in item ${JSON.stringify(this)}`)
     }

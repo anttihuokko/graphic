@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import { first, last } from 'lodash'
 import { TimeSeries, TimeSeriesItem, TimeSeriesItemSlice, TimeSeriesSection } from './TimeSeries'
 import { TimeSeriesDataQuery } from './TimeSeriesDataQuery'
 import { TimeSeriesDataRequest, TimeSeriesDataRequestType } from './TimeSeriesDataRequest'
@@ -101,7 +101,7 @@ export class TimeSeriesDataCache {
   }
 
   private handleLeftExpand(requestSection: TimeSeriesSection, items: TimeSeriesItem[]): void {
-    const lastItem = _.last(items)
+    const lastItem = last(items)
     const slice = lastItem
       ? this.timeSeries.getItemSlice(new TimeSeriesSection(lastItem.time, 0, Number.MAX_VALUE))
       : null
@@ -113,7 +113,7 @@ export class TimeSeriesDataCache {
   }
 
   private handleRigthExpand(requestSection: TimeSeriesSection, items: TimeSeriesItem[]): void {
-    const firstItem = _.first(items)
+    const firstItem = first(items)
     const slice = firstItem
       ? this.timeSeries.getItemSlice(new TimeSeriesSection(firstItem.time, Number.MAX_VALUE, 0))
       : null

@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import { pull } from 'lodash'
 import { TimeSeriesItemSlice } from './TimeSeries'
 import { TimeSeriesDataCache } from './TimeSeriesDataCache'
 import { TimeSeriesDataQuery } from './TimeSeriesDataQuery'
@@ -104,7 +104,7 @@ export class TimeSeriesDataProvider {
     if (this.isActiveQuery(queryId)) {
       const activeRequest = this.getActiveRequest(request.id)
       if (activeRequest) {
-        _.pull(this.activeRequests, activeRequest)
+        pull(this.activeRequests, activeRequest)
         this.requestFinished(request.id, request.section.time)
       }
     }
