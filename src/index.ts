@@ -1,3 +1,4 @@
+import './../assets/Graphic.css'
 import './../assets/Chart.css'
 
 export * from './model/Color'

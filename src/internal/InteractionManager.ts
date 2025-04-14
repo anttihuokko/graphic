@@ -1,5 +1,6 @@
 import { Graphic } from '../Graphic'
 import { ScreenLocation } from '../model/ScreenLocation'
+import { EventTarget } from './EventTarget'
 import { EventUtil } from './EventUtil'
 import {
   Interaction,
@@ -25,52 +26,55 @@ export class InteractionManager {
 
   private doubleClickTimeoutHandle: NodeJS.Timeout | null = null
 
-  constructor(private readonly graphic: Graphic) {
-    this.graphic.svg.on('wheel', (event: Event) =>
+  constructor(
+    private readonly eventTarget: EventTarget,
+    private readonly graphic: Graphic
+  ) {
+    this.eventTarget.on('wheel', (event: Event) =>
       this.processEvent(event, (holds, location) => this.handleWheelInteraction(holds, location, event as WheelEvent))
     )
-    this.graphic.svg.on('mousedown', (event: Event) =>
+    this.eventTarget.on('mousedown', (event: Event) =>
       this.processEvent(event, (holds, location) => this.handleInteractionInit(holds, location, event as MouseEvent))
     )
-    this.graphic.svg.on('touchstart', (event: Event) =>
+    this.eventTarget.on('touchstart', (event: Event) =>
       this.processEvent(event, (holds, location) => this.handleInteractionInit(holds, location, event as TouchEvent))
     )
-    this.graphic.svg.on('mousemove', (event: Event) =>
+    this.eventTarget.on('mousemove', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionPerformed(holds, location, event as MouseEvent)
       )
     )
-    this.graphic.svg.on('touchmove', (event: Event) =>
+    this.eventTarget.on('touchmove', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionPerformed(holds, location, event as TouchEvent)
       )
     )
-    this.graphic.svg.on('mouseup', (event: Event) =>
+    this.eventTarget.on('mouseup', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionEnd(holds, location, true, event as MouseEvent)
       )
     )
-    this.graphic.svg.on('mouseleave', (event: Event) =>
+    this.eventTarget.on('mouseleave', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionEnd(holds, location, false, event as MouseEvent)
       )
     )
-    this.graphic.svg.on('dragend', (event: Event) =>
+    this.eventTarget.on('dragend', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionEnd(holds, location, false, event as MouseEvent)
       )
     )
-    this.graphic.svg.on('touchend', (event: Event) =>
+    this.eventTarget.on('touchend', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionEnd(holds, location, true, event as TouchEvent)
       )
     )
-    this.graphic.svg.on('touchleave', (event: Event) =>
+    this.eventTarget.on('touchleave', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionEnd(holds, location, false, event as TouchEvent)
       )
     )
-    this.graphic.svg.on('touchcancel', (event: Event) =>
+    this.eventTarget.on('touchcancel', (event: Event) =>
       this.processEvent(event, (holds, location) =>
         this.handleInteractionEnd(holds, location, false, event as TouchEvent)
       )
@@ -88,14 +92,14 @@ export class InteractionManager {
   }
 
   private handleWheelInteraction(holds: number, location: ScreenLocation, event: WheelEvent): void {
-    new WheelInteraction(holds, location).fireFinalEvent(location, this.graphic, event)
+    new WheelInteraction(holds, location).fireFinalEvent(location, this.eventTarget, this.graphic, event)
   }
 
   private handleInteractionInit(holds: number, location: ScreenLocation, event: MouseEvent | TouchEvent): void {
     if (holds > 0) {
       this.interactionInitialLocation = location
       this.interactionInitialEvent = event
-      new HoldInteraction(holds, location).fireStartEvent(location, this.graphic, event)
+      new HoldInteraction(holds, location).fireStartEvent(location, this.eventTarget, this.graphic, event)
     }
   }
 
@@ -104,12 +108,17 @@ export class InteractionManager {
     location: ScreenLocation,
     event: MouseEvent | TouchEvent
   ): void {
-    new HoldInteraction(interaction.holds, location).fireFinalEvent(location, this.graphic, event)
+    new HoldInteraction(interaction.holds, location).fireFinalEvent(location, this.eventTarget, this.graphic, event)
     this.activeInteraction = interaction
     if (this.interactionInitialLocation && this.interactionInitialEvent) {
-      this.activeInteraction.fireStartEvent(this.interactionInitialLocation, this.graphic, this.interactionInitialEvent)
+      this.activeInteraction.fireStartEvent(
+        this.interactionInitialLocation,
+        this.eventTarget,
+        this.graphic,
+        this.interactionInitialEvent
+      )
     }
-    this.activeInteraction.fireIntermediateEvent(location, this.graphic, event)
+    this.activeInteraction.fireIntermediateEvent(location, this.eventTarget, this.graphic, event)
   }
 
   private handleInteractionPerformed(holds: number, location: ScreenLocation, event: MouseEvent | TouchEvent): void {
@@ -118,7 +127,7 @@ export class InteractionManager {
         this.handleInteractionEnd(holds, location, false, event)
         this.handleInteractionInit(holds, location, event)
       } else {
-        this.activeInteraction.fireIntermediateEvent(location, this.graphic, event)
+        this.activeInteraction.fireIntermediateEvent(location, this.eventTarget, this.graphic, event)
       }
     } else if (this.interactionInitialLocation && this.hasMoved(this.interactionInitialLocation, location)) {
       if (holds === 1) {
@@ -131,7 +140,7 @@ export class InteractionManager {
         )
       }
     } else {
-      new HoverInteraction(location).fireFinalEvent(location, this.graphic, event)
+      new HoverInteraction(location).fireFinalEvent(location, this.eventTarget, this.graphic, event)
     }
   }
 
@@ -142,7 +151,7 @@ export class InteractionManager {
     event: MouseEvent | TouchEvent
   ): void {
     if (this.activeInteraction) {
-      this.activeInteraction.fireFinalEvent(location, this.graphic, event)
+      this.activeInteraction.fireFinalEvent(location, this.eventTarget, this.graphic, event)
     } else if (commit && this.interactionInitialLocation) {
       this.handleClickInteraction(holds, location, event)
     }
@@ -153,13 +162,13 @@ export class InteractionManager {
 
   private handleClickInteraction(holds: number, location: ScreenLocation, event: MouseEvent | TouchEvent): void {
     const doubleClick = !!this.doubleClickTimeoutHandle
-    new ClickInteraction(holds, location).fireFinalEvent(location, this.graphic, event)
+    new ClickInteraction(holds, location).fireFinalEvent(location, this.eventTarget, this.graphic, event)
     if (doubleClick) {
       if (this.doubleClickTimeoutHandle) {
         clearTimeout(this.doubleClickTimeoutHandle)
         this.doubleClickTimeoutHandle = null
       }
-      new DoubleClickInteraction(holds, location).fireFinalEvent(location, this.graphic, event)
+      new DoubleClickInteraction(holds, location).fireFinalEvent(location, this.eventTarget, this.graphic, event)
     } else {
       this.doubleClickTimeoutHandle = setTimeout(
         () => (this.doubleClickTimeoutHandle = null),

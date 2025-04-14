@@ -1,5 +1,13 @@
-import { TestComponent } from '.'
-import { BarChartDrawer, Color, CustomChartDrawer, Duration, LineChartDrawer, Time, TimeSeriesChart } from '../../src'
+import { TestComponent } from '..'
+import {
+  BarChartDrawer,
+  Color,
+  CustomChartDrawer,
+  Duration,
+  LineChartDrawer,
+  Time,
+  TimeSeriesChart,
+} from '../../../src'
 import { createDataSource } from './DataSource'
 
 export const component: TestComponent = {

@@ -4,15 +4,19 @@ import { Offset } from '../model/Offset'
 import { Box } from '../model/Box'
 
 export abstract class GraphicElement {
-  private group: G
+  private readonly group: G
 
-  protected container: G
+  protected readonly container: G
 
   private clipper: Clipper | null = null
 
   constructor(className: string, parent: Container) {
     this.group = parent.group()
     this.container = this.group.group().addClass(className)
+  }
+
+  protected onFontsReady(cb: () => void): void {
+    document.fonts.ready.then(cb)
   }
 
   get visible(): boolean {

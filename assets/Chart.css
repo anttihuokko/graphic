@@ -15,7 +15,7 @@ svg {
 /***
  * SYMBOL
  ***/
-symbol>* {
+symbol > * {
   stroke: inherit;
 }
 
@@ -35,21 +35,21 @@ symbol text {
   fill: rgba(0, 0, 0, 0.8);
 }
 
-.chart-button>rect {
+.chart-button > rect {
   stroke-width: 1px;
   stroke: #7a7a7a;
   fill: #f7f7f7;
 }
 
-.chart-button:hover>rect {
+.chart-button:hover > rect {
   fill: #dddddd;
 }
 
-.chart-button:active>rect {
+.chart-button:active > rect {
   fill: #c9c9c9;
 }
 
-.chart-button.selected>rect {
+.chart-button.selected > rect {
   stroke: rgb(37, 37, 245);
 }
 
@@ -58,15 +58,15 @@ symbol text {
   fill: rgb(245, 245, 245);
 }
 
-.chart-button.selected>rect {
+.chart-button.selected > rect {
   fill: rgb(64, 64, 240);
 }
 
-.chart-button.selected:hover>rect {
+.chart-button.selected:hover > rect {
   fill: rgb(41, 41, 247);
 }
 
-.chart-button.selected:active>rect {
+.chart-button.selected:active > rect {
   fill: rgb(97, 97, 241);
 }
 
@@ -108,11 +108,6 @@ symbol text {
   stroke: #474747;
 }
 
-.chart-highlight text {
-  font-size: 13px;
-  fill: white;
-}
-
 /***
  * AXEL
  ***/
@@ -146,27 +141,29 @@ symbol text {
 /***
  * PANEL 
  ***/
-.chart-panel .chart-panel-frame>rect {
+.chart-panel .chart-panel-frame > rect {
   fill: transparent;
 }
 
-.chart-panel .chart-panel-frame>rect {
+.chart-panel .chart-panel-frame > rect {
   fill: transparent;
 }
 
-.chart-panel .chart-panel-frame>path {
+.chart-panel .chart-panel-frame > path {
   stroke-width: 1px;
   stroke-linecap: round;
   stroke: #767676;
 }
 
-.chart-panel.focused .chart-panel-frame>rect {
+.chart-panel.focused .chart-panel-frame > rect {
   stroke-width: 1px;
   stroke: #b9b9b9;
 }
 
 .chart-panel .chart-panel-controls {
-  transition: visibility 0.6s, opacity 0.6s;
+  transition:
+    visibility 0.6s,
+    opacity 0.6s;
 }
 
 .chart-panel .chart-panel-controls .mask {
@@ -216,7 +213,9 @@ symbol text {
 .chart-loading-indicator {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.8s, opacity 0.8s;
+  transition:
+    visibility 0.8s,
+    opacity 0.8s;
 }
 
 .chart-loading-indicator.show {

@@ -28,7 +28,7 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Graphic Test',
+      title: 'Graphic Demo',
     }),
   ],
   output: {

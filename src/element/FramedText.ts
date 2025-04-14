@@ -12,7 +12,7 @@ export class FramedText extends GraphicElement {
     super('graphic-framed-text', parent)
     this.frame = this.container.rect(10, 10).attr('rx', round)
     this.text = this.container.text('')
-    this.refresh()
+    this.onFontsReady(() => this.refresh())
   }
 
   setText(value: string): this {

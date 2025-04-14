@@ -105,7 +105,7 @@ abstract class BaseGraphicEvent<T extends Event> implements GraphicEvent<T> {
   }
 
   get documentPoint(): Point {
-    const bounds = this.graphic.nativeElement.getBoundingClientRect()
+    const bounds = this.graphic.getBoundingClientRect()
     return new Point(this.location.x - bounds.x, this.location.y - bounds.y)
   }
 

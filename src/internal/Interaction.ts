@@ -12,6 +12,7 @@ import {
 } from '../GraphicEvent'
 import { Offset } from '../model/Offset'
 import { ScreenLocation } from '../model/ScreenLocation'
+import { EventTarget } from './EventTarget'
 import { EventUtil } from './EventUtil'
 import { MathUtil } from './MathUtil'
 
@@ -24,26 +25,27 @@ export abstract class Interaction<T extends Event> {
     readonly initialLocation: ScreenLocation
   ) {}
 
-  fireStartEvent(location: ScreenLocation, graphic: Graphic, nativeEvent: T): void {
-    this.fireEvent(this.startEventName, location, graphic, nativeEvent)
+  fireStartEvent(location: ScreenLocation, eventTarget: EventTarget, graphic: Graphic, nativeEvent: T): void {
+    this.fireEvent(this.startEventName, location, eventTarget, graphic, nativeEvent)
   }
 
-  fireIntermediateEvent(location: ScreenLocation, graphic: Graphic, nativeEvent: T): void {
-    this.fireEvent(this.intermediateEventName, location, graphic, nativeEvent)
+  fireIntermediateEvent(location: ScreenLocation, eventTarget: EventTarget, graphic: Graphic, nativeEvent: T): void {
+    this.fireEvent(this.intermediateEventName, location, eventTarget, graphic, nativeEvent)
   }
 
-  fireFinalEvent(location: ScreenLocation, graphic: Graphic, nativeEvent: T): void {
-    this.fireEvent(this.finalEventName, location, graphic, nativeEvent)
+  fireFinalEvent(location: ScreenLocation, eventTarget: EventTarget, graphic: Graphic, nativeEvent: T): void {
+    this.fireEvent(this.finalEventName, location, eventTarget, graphic, nativeEvent)
   }
 
   private fireEvent(
     eventName: GraphicEventName | null,
     location: ScreenLocation,
+    eventTarget: EventTarget,
     graphic: Graphic,
     nativeEvent: T
   ): void {
     if (eventName) {
-      graphic.svg.fire(eventName, this.createGraphicEvent(location, graphic, nativeEvent))
+      eventTarget.fire(eventName, this.createGraphicEvent(location, graphic, nativeEvent))
     }
   }
 

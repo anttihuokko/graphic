@@ -4,13 +4,16 @@ import { InteractionManager } from './internal/InteractionManager'
 import { Symbols } from './Symbols'
 import { PollingResizeObserver } from './internal/ResizeObserver'
 import { Size } from './model/Size'
+import { EventTarget } from './internal/EventTarget'
 
 export class Graphic {
-  readonly svg: Svg
+  protected readonly svg: Svg
 
-  readonly nativeElement: SVGElement
+  private readonly nativeElement: SVGElement
 
   private readonly resizeObserver: PollingResizeObserver
+
+  private readonly eventTarget: EventTarget
 
   private graphicSize: Size
 
@@ -20,14 +23,19 @@ export class Graphic {
     this.svg = SVG().addTo(container).addClass('graphic')
     this.nativeElement = container.querySelector<SVGElement>('svg')!
     this.resizeObserver = new PollingResizeObserver(this.nativeElement.parentElement!, () => this.handleResize())
+    this.eventTarget = new EventTarget(this.svg)
     this.graphicSize = this.getGraphicSize()
-    new InteractionManager(this)
+    new InteractionManager(this.eventTarget, this)
     this.symbols = new Symbols(this.svg)
     this.resizeObserver.enable()
   }
 
   get size(): Size {
     return this.graphicSize
+  }
+
+  getBoundingClientRect(): DOMRect {
+    return this.nativeElement.getBoundingClientRect()
   }
 
   listen<T extends GraphicEvent>(eventName: GraphicEventName, listener: (event: T) => void): GraphicEventListener<T> {
@@ -43,7 +51,7 @@ export class Graphic {
     const size = this.getGraphicSize()
     if (!size.isZero()) {
       this.graphicSize = size
-      this.svg.fire('gresize', new GraphicResizeEvent(this))
+      this.eventTarget.fire('gresize', new GraphicResizeEvent(this))
     }
   }
 

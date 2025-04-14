@@ -33,13 +33,11 @@ class ChartPanelFrame extends ChartElement<PanelContext> {
   private refresh(): void {
     this.translateTo(1, 1)
     this.bg.move(1, 1).size(this.dimensions.drawAreaWidth - 2, this.dimensions.drawAreaHeight - 2)
-    const topLine = this.context.firstPanel ? `M 0 0 H ${this.dimensions.drawAreaWidth}` : ''
-    const extraHeight = this.context.lastPanel ? 24 : 0
     this.border.plot(`
-      ${topLine}
+      ${this.context.firstPanel ? `M 0 0 H ${this.dimensions.drawAreaWidth}` : ''}
       M 0 ${this.dimensions.drawAreaHeight} H ${this.dimensions.drawAreaWidth + 44}
       M 0 0 V ${this.dimensions.drawAreaHeight}
-      M ${this.dimensions.drawAreaRight - 1} 0 V ${this.dimensions.drawAreaHeight + extraHeight}
+      M ${this.dimensions.drawAreaRight - 1} 0 V ${this.dimensions.drawAreaHeight + (this.context.lastPanel ? 24 : 0)}
     `)
   }
 }

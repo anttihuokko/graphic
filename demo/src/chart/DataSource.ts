@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { TimeSeriesDataSource } from '../../src'
+import { TimeSeriesDataSource } from '../../../src'
 
 export function createDataSource(): TimeSeriesDataSource {
   return {

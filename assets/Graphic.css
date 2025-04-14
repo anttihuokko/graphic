@@ -1,0 +1,11 @@
+.graphic-framed-text rect {
+  fill: gray;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.graphic-framed-text text {
+  font-size: 13px;
+  fill: white;
+  font-family: 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif;
+}
