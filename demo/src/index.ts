@@ -1,13 +1,14 @@
 import { component as component1 } from './ui/framed-text-test'
-import { component as component2 } from './chart/gap-test'
-import { component as component3 } from './chart/custom-test'
+import { component as component2 } from './ui/button-test'
+import { component as component3 } from './chart/gap-test'
+import { component as component4 } from './chart/custom-test'
 
 export type TestComponent = {
   title: string
   create: (container: HTMLDivElement) => void
 }
 
-const components: TestComponent[] = [component1, component2, component3]
+const components: TestComponent[] = [component1, component2, component3, component4]
 
 function component(): HTMLElement {
   const params = new URLSearchParams(window.location.search)

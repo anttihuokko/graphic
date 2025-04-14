@@ -40,14 +40,15 @@ export class Symbols {
     symbol
       .path(
         `
-      M 2 2 h 2.5
-      M 2 2 v 2.5
-      M 7.5 2 h 2.5
-      M 10 2.5 v 2.5
-      M 7.5 10 h 2.5
-      M 10 7.5 v 2.5
-      M 2 10 h 2.5
-      M 2 7.5 v 2.5`
+          M 2 2 h 2.5
+          M 2 2 v 2.5
+          M 7.5 2 h 2.5
+          M 10 2.5 v 2.5
+          M 7.5 10 h 2.5
+          M 10 7.5 v 2.5
+          M 2 10 h 2.5
+          M 2 7.5 v 2.5
+        `
       )
       .stroke({ width: 1, linecap: 'round' })
     return symbol
@@ -59,8 +60,9 @@ export class Symbols {
     symbol
       .path(
         `
-      M 7 3.2 v 1.5
-      M 7 5.8 v 4.5`
+          M 7 3.2 v 1.5
+          M 7 5.8 v 4.5
+        `
       )
       .stroke({ width: 1.4 })
     return symbol

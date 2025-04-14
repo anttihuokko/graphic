@@ -1,6 +1,6 @@
 import { Container, Rect } from '@svgdotjs/svg.js'
 import { EventType } from '../Context'
-import { ChartButton } from '../element/ChartButton'
+import { Button } from '../../element/Button'
 import { ChartElement } from '../element/ChartElement'
 import { PanelState } from './ChartPanel'
 import { PanelContext } from './PanelContext'
@@ -8,17 +8,17 @@ import { PanelContext } from './PanelContext'
 export class PanelControls extends ChartElement<PanelContext> {
   private static readonly MARGIN = 8
 
-  private static readonly SPACING = 32
+  private static readonly SPACING = 38
 
   private readonly mask: Rect
 
-  private readonly collapseToggleButton1: ChartButton
+  private readonly collapseToggleButton1: Button
 
-  private readonly collapseToggleButton2: ChartButton
+  private readonly collapseToggleButton2: Button
 
-  private readonly maximizeToggleButton: ChartButton
+  private readonly maximizeToggleButton: Button
 
-  private readonly infoToggleButton: ChartButton
+  private readonly infoToggleButton: Button
 
   private currentPanelState = PanelState.DEFAULT
 
@@ -27,14 +27,10 @@ export class PanelControls extends ChartElement<PanelContext> {
   constructor(parent: Container, context: PanelContext) {
     super('chart-panel-controls', parent, context)
     this.mask = this.container.rect().addClass('mask').hide()
-    this.collapseToggleButton1 = new ChartButton(
-      context.symbols.angleDown,
-      'chart-panel-collapse-toggle',
-      this.container
-    )
-    this.collapseToggleButton2 = new ChartButton(context.symbols.angleUp, 'chart-panel-collapse-toggle', this.container)
-    this.maximizeToggleButton = new ChartButton(context.symbols.expand, 'chart-panel-maximize-toggle', this.container)
-    this.infoToggleButton = new ChartButton(context.symbols.info, 'chart-panel-info-toggle', this.container)
+    this.collapseToggleButton1 = new Button(context.symbols.angleDown, 'chart-panel-collapse-toggle', this.container)
+    this.collapseToggleButton2 = new Button(context.symbols.angleUp, 'chart-panel-collapse-toggle', this.container)
+    this.maximizeToggleButton = new Button(context.symbols.expand, 'chart-panel-maximize-toggle', this.container)
+    this.infoToggleButton = new Button(context.symbols.info, 'chart-panel-info-toggle', this.container)
     this.context.addEventListener(EventType.REPOSITION, () => this.refresh())
     this.context.addEventListener(EventType.REDRAW, () => this.refresh())
     this.refresh()
@@ -107,7 +103,7 @@ export class PanelControls extends ChartElement<PanelContext> {
     )
   }
 
-  private positionButtons(buttons: ChartButton[], marginTop: number): void {
+  private positionButtons(buttons: Button[], marginTop: number): void {
     buttons
       .filter((button) => button.visible)
       .forEach((button, index, visibleButtons) => {
