@@ -99,7 +99,8 @@ export abstract class BaseChartDrawer implements ChartDrawer {
     readonly minValueField: string,
     readonly maxValueField: string,
     readonly requiredFields: string[],
-    infoTemplate: string
+    infoTemplate: string,
+    private readonly enabled: boolean
   ) {
     this.legendDef = { label: name, color1: color1, color2: color2 }
     this.infoTemplate = new Template(infoTemplate)
@@ -124,7 +125,7 @@ export abstract class BaseChartDrawer implements ChartDrawer {
   }
 
   isEnabled(): boolean {
-    return true
+    return this.enabled
   }
 
   getInfoText(accessor: DataAccessor): string {

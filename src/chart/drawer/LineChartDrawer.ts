@@ -7,9 +7,10 @@ export class LineChartDrawer extends BaseChartDrawer {
     name: string,
     color: Color,
     private readonly valueField: string,
-    infoTemplate: string = ''
+    infoTemplate: string = '',
+    enabled: boolean = true
   ) {
-    super(name, color, color, valueField, valueField, [valueField], infoTemplate)
+    super(name, color, color, valueField, valueField, [valueField], infoTemplate, enabled)
   }
 
   createDrawing(items: DrawingItem[], container: Container): void {

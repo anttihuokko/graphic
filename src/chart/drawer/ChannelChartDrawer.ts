@@ -8,9 +8,10 @@ export class ChannelChartDrawer extends BaseChartDrawer {
     color: Color,
     private readonly upperBandField: string,
     private readonly lowerBandField: string,
-    infoTemplate: string = ''
+    infoTemplate: string = '',
+    enabled: boolean = true
   ) {
-    super(name, color, color, upperBandField, lowerBandField, [upperBandField, lowerBandField], infoTemplate)
+    super(name, color, color, upperBandField, lowerBandField, [upperBandField, lowerBandField], infoTemplate, enabled)
   }
 
   createDrawing(items: DrawingItem[], container: Container): void {

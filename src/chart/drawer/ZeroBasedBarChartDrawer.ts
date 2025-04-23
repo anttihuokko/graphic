@@ -9,9 +9,10 @@ export class ZeroBasedBarChartDrawer extends BaseChartDrawer {
     color1: Color,
     color2: Color,
     private readonly valueField: string,
-    infoTemplate: string = ''
+    infoTemplate: string = '',
+    enabled: boolean = true
   ) {
-    super(name, color1, color2, valueField, valueField, [valueField], infoTemplate)
+    super(name, color1, color2, valueField, valueField, [valueField], infoTemplate, enabled)
   }
 
   createDrawing(items: DrawingItem[], container: Container): void {

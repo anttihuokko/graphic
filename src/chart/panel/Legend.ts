@@ -47,6 +47,10 @@ class LegendItem extends ContainerFrame {
     return this.container.hasClass('disabled')
   }
 
+  isActive() {
+    return this.isDrawingEnabled() && !this.isDisabled()
+  }
+
   toggleDisabled(): void {
     this.container.toggleClass('disabled')
     this.drawing.setVisible(!this.isDisabled())
@@ -99,8 +103,8 @@ export class Legend extends ChartElement<PanelContext> {
       if (targetItem.isDisabled()) {
         targetItem.toggleDisabled()
       } else {
-        const enabledItemCount = this.items.reduce((acc, item) => (!item.isDisabled() ? acc + 1 : acc), 0)
-        if (enabledItemCount > 1) {
+        const activeItemCount = this.items.reduce((acc, item) => (item.isActive() ? acc + 1 : acc), 0)
+        if (activeItemCount > 1) {
           targetItem.toggleDisabled()
         }
       }
@@ -108,7 +112,11 @@ export class Legend extends ChartElement<PanelContext> {
   }
 
   private handleHighlightChange(): void {
-    this.items.forEach((item) => item.updateInfoText(this.context.highlightTime))
+    this.items.forEach((item) => {
+      if (item.isActive()) {
+        item.updateInfoText(this.context.highlightTime)
+      }
+    })
   }
 
   private refresh(): void {
@@ -118,8 +126,15 @@ export class Legend extends ChartElement<PanelContext> {
     } else {
       this.itemContainer.show()
       this.label.hide()
-      for (let i = 0; i < this.items.length; i++) {
-        this.items[i].translateTo(10, 10 + 25 * i)
+      let drawIndex = 0
+      for (const item of this.items) {
+        if (item.isDrawingEnabled()) {
+          item.setVisible(true)
+          item.translateTo(10, 10 + 25 * drawIndex)
+          drawIndex++
+        } else {
+          item.setVisible(false)
+        }
       }
     }
   }

@@ -11,7 +11,8 @@ export class GroupDrawer implements ChartDrawer {
 
   constructor(
     private readonly masterDrawerIndex: number,
-    ...drawers: ChartDrawer[]
+    drawers: ChartDrawer[],
+    private readonly enabled: boolean = true
   ) {
     if (!drawers.length) {
       throw Error('Group darwer must have at least one drawer')
@@ -39,7 +40,7 @@ export class GroupDrawer implements ChartDrawer {
   }
 
   isEnabled(): boolean {
-    return true
+    return this.enabled
   }
 
   getInfoText(accessor: DataAccessor): string {

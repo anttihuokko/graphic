@@ -13,7 +13,8 @@ export class CandleStickChartDrawer extends BaseChartDrawer {
     private readonly highValueField: string,
     private readonly lowValueField: string,
     private readonly closeValueField: string,
-    infoTemplate: string = ''
+    infoTemplate: string = '',
+    enabled: boolean = true
   ) {
     super(
       name,
@@ -22,7 +23,8 @@ export class CandleStickChartDrawer extends BaseChartDrawer {
       lowValueField,
       highValueField,
       [openValueField, highValueField, lowValueField, closeValueField],
-      infoTemplate
+      infoTemplate,
+      enabled
     )
   }
 
