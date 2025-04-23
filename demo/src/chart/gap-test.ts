@@ -17,9 +17,12 @@ export const component: TestComponent = {
     chart.updateSettings({
       gapsRemoved: true,
       gapsVisualized: true,
-      debugInfoVisible: false,
+      debugInfoVisible: true,
     })
-    chart.addPanel([new BarChartDrawer('Bars', Color.GREEN, 'value1'), createCustomChartDrawerForGapTest2()])
+    chart.addPanel([
+      new BarChartDrawer('Bars', Color.GREEN, 'value1', 'Testi info'),
+      createCustomChartDrawerForGapTest2(),
+    ])
     chart.addPanel([new LineChartDrawer('Line', Color.GREEN, 'value2')])
     chart.moveCenterToTime(Time.fromISO('2021-06-10'))
   },

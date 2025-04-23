@@ -4,26 +4,30 @@ import { Offset } from '../model/Offset'
 import { Box } from '../model/Box'
 
 export abstract class GraphicElement {
-  private readonly group: G
+  private readonly clipperGroup: G
 
   protected readonly container: G
 
   private clipper: Clipper | null = null
 
   constructor(className: string, parent: Container) {
-    this.group = parent.group()
-    this.container = this.group.group().addClass(className)
+    this.clipperGroup = parent.group()
+    this.container = this.clipperGroup.group().addClass(className)
   }
 
   protected onFontsReady(cb: () => void): void {
     document.fonts.ready.then(cb)
   }
 
-  get visible(): boolean {
+  protected refreshElement(): void {
+    // Overrid if needed
+  }
+
+  isVisible(): boolean {
     return this.container.visible()
   }
 
-  get elementOffset(): Offset {
+  getElementOffset(): Offset {
     const transform = this.container.transform()
     return new Offset(transform.translateX ?? 0, transform.translateY ?? 0)
   }
@@ -34,11 +38,11 @@ export abstract class GraphicElement {
   }
 
   translateToX(value: number): this {
-    return this.translateTo(value, this.elementOffset.y)
+    return this.translateTo(value, this.getElementOffset().y)
   }
 
   translateToY(value: number): this {
-    return this.translateTo(this.elementOffset.x, value)
+    return this.translateTo(this.getElementOffset().x, value)
   }
 
   translateTo(x: number, y: number): this {
@@ -64,6 +68,7 @@ export abstract class GraphicElement {
   setVisible(visible: boolean): this {
     if (visible) {
       this.container.show()
+      this.refreshElement()
     } else {
       this.container.hide()
     }
@@ -72,7 +77,7 @@ export abstract class GraphicElement {
 
   clip(box: Box | null = null): Clipper {
     if (!this.clipper) {
-      this.clipper = new Clipper(this.group)
+      this.clipper = new Clipper(this.clipperGroup)
     }
     if (box) {
       this.clipper.move(box.x, box.y).size(box.width, box.height)

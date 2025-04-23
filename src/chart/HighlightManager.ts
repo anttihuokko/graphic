@@ -1,9 +1,10 @@
 import { Container, G, Line } from '@svgdotjs/svg.js'
-import { FramedText } from '../element/FramedText'
+import { TextFrame } from '../element/TextFrame'
 import { ChartContext } from './ChartContext'
 import { EventType } from './Context'
 import { ChartElement } from './element/ChartElement'
 import { Time } from '../model/Time'
+import { Size } from '../model/Size'
 
 export interface HighlightValue {
   value: number
@@ -16,12 +17,12 @@ class XHighlight extends ChartElement<ChartContext> {
 
   private readonly line: Line
 
-  private readonly text: FramedText
+  private readonly text: TextFrame
 
   constructor(parent: Container, context: ChartContext) {
     super('chart-highlight', parent, context)
     this.line = this.container.line(0, 0, 0, 1)
-    this.text = new FramedText(this.container, 2)
+    this.text = new TextFrame('', this.container).round(2).setPadding(new Size(4, 3))
   }
 
   setHighlight(value: HighlightValue): void {
@@ -39,12 +40,12 @@ class YHighlight extends ChartElement<ChartContext> {
 
   private readonly line: Line
 
-  private readonly text: FramedText
+  private readonly text: TextFrame
 
   constructor(parent: Container, context: ChartContext) {
     super('chart-highlight', parent, context)
     this.line = this.container.line(0, 0, 1, 0)
-    this.text = new FramedText(this.container, 2)
+    this.text = new TextFrame('', this.container).round(2).setPadding(new Size(4, 3))
   }
 
   setHighlight(value: HighlightValue): void {

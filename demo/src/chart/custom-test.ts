@@ -10,7 +10,7 @@ export const component: TestComponent = {
     chart.updateSettings({
       gapsRemoved: true,
       gapsVisualized: true,
-      debugInfoVisible: false,
+      debugInfoVisible: true,
     })
     chart.addPanel([new LineChartDrawer('Line', Color.GREEN, 'value2')])
     chart.listen('gclick', (event: GraphicClickEvent) => {

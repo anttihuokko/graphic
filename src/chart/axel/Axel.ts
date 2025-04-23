@@ -84,7 +84,7 @@ export abstract class Axel<ZM extends ZoomManager, CTX extends Context> extends 
     }
     this.grid.updateOffset(pixels)
     this.offsetElement(pixels)
-    if (this.grid.isOffsetOverInterval(this.getElementOffset())) {
+    if (this.grid.isOffsetOverInterval(this.getAxelElementOffset())) {
       this.moveToValue(this.grid.gridStartValue, false)
       this.updateLabels()
     }
@@ -113,8 +113,8 @@ export abstract class Axel<ZM extends ZoomManager, CTX extends Context> extends 
 
   protected abstract updateLabels(): void
 
-  private getElementOffset(): number {
-    return this.grid.horizontal ? this.elementOffset.x : this.elementOffset.y
+  private getAxelElementOffset(): number {
+    return this.grid.horizontal ? this.getElementOffset().x : this.getElementOffset().y
   }
 
   private offsetElement(pixels: number): void {

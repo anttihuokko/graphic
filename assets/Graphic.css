@@ -24,15 +24,35 @@ symbol text {
 }
 
 /***
- * FRAMED TEXT
+ * CONTAINER FRAME
  ***/
-.graphic-framed-text rect {
-  fill: gray;
+.graphic-container-frame .frame {
+  fill: white;
+  opacity: 0.5;
+}
+
+.graphic-container-frame .frame.border {
   stroke: black;
   stroke-width: 1px;
 }
 
-.graphic-framed-text text {
+.graphic-container-frame line {
+  stroke: black;
+}
+
+/***
+ * TEXT FRAME
+ ***/
+.graphic-text-frame .frame {
+  fill: gray;
+}
+
+.graphic-text-frame .frame.border {
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.graphic-text-frame text {
   font-size: 13px;
   fill: white;
   font-family: 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif;

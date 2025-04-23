@@ -1,7 +1,7 @@
 /***
  * INFO PANEL
  ***/
-.chart-info-panel rect {
+.chart-info-panel .frame {
   stroke: #767676;
   fill: white;
 }
@@ -160,6 +160,7 @@
   font-size: 12px;
   font-weight: bold;
   fill: rgb(172, 17, 17);
+  font-family: 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif;
 }
 
 /***

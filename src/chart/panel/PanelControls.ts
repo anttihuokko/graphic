@@ -99,13 +99,13 @@ export class PanelControls extends ChartElement<PanelContext> {
     }
     this.positionButtons(
       [this.collapseToggleButton1, this.collapseToggleButton2, this.maximizeToggleButton, this.infoToggleButton],
-      this.currentPanelState === PanelState.COLLAPSED ? 1 : PanelControls.MARGIN
+      this.currentPanelState === PanelState.COLLAPSED ? 2 : PanelControls.MARGIN
     )
   }
 
   private positionButtons(buttons: Button[], marginTop: number): void {
     buttons
-      .filter((button) => button.visible)
+      .filter((button) => button.isVisible())
       .forEach((button, index, visibleButtons) => {
         const position = visibleButtons.length - index
         button.translateTo(this.dimensions.drawAreaWidth - PanelControls.SPACING * position, marginTop)

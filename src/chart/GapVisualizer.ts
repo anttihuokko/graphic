@@ -23,7 +23,7 @@ export class GapVisualizer extends ChartElement<ChartContext> {
 
   refresh() {
     this.setVisible(this.context.settings.gapsVisualized)
-    if (this.visible) {
+    if (this.isVisible()) {
       this.clip(
         new Box(
           this.dimensions.marginLeft,

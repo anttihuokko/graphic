@@ -1,12 +1,17 @@
 import { Container } from '@svgdotjs/svg.js'
-import { ChartFrame, Location } from '../element/ChartFrame'
 import { PanelContext } from './PanelContext'
-import { Box } from '../../model/Box'
+import { TextLocation, TextFrame } from '../../element/TextFrame'
+import { Size } from '../../model/Size'
+import { EventType } from '../Context'
 
-export class DataLoadingIndicator extends ChartFrame {
-  constructor(parent: Container, context: PanelContext) {
-    super('chart-loading-indicator', '', parent, context)
-    this.addText('Loading...', Location.CENTER)
+export class DataLoadingIndicator extends TextFrame {
+  constructor(
+    parent: Container,
+    private readonly context: PanelContext
+  ) {
+    super('chart-loading-indicator', parent)
+    this.setPadding(new Size(6, 3)).setText('Loading...', TextLocation.CENTER)
+    context.addEventListener(EventType.REPOSITION, () => this.refresh())
     this.showIndicator()
   }
 
@@ -19,7 +24,8 @@ export class DataLoadingIndicator extends ChartFrame {
     this.container.removeClass('show')
   }
 
-  protected positionElements(): Box {
-    return new Box(4, this.context.dimensions.drawAreaHeight - 24, 70, 22)
+  private refresh(): void {
+    this.translateTo(4, this.context.dimensions.drawAreaHeight - 22)
+    this.refreshElement()
   }
 }

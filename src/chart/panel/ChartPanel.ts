@@ -49,7 +49,7 @@ export enum PanelState {
 }
 
 export class ChartPanel extends ChartElement<ChartContext> {
-  static readonly COLLAPSED_HEIGHT = 26
+  static readonly COLLAPSED_HEIGHT = 32
 
   static readonly PANEL_SIZE_RATIOS: { [key: number]: number[] } = {
     1: [1.0],
@@ -163,7 +163,7 @@ export class ChartPanel extends ChartElement<ChartContext> {
     } else {
       this.canvas.translate(offset.x, 0)
     }
-    this.panelContext.setViewOffset(this.canvas.elementOffset)
+    this.panelContext.setViewOffset(this.canvas.getElementOffset())
     this.panelContext.fireEvent(EventType.VIEW_OFFSET)
   }
 
@@ -213,7 +213,7 @@ export class ChartPanel extends ChartElement<ChartContext> {
     this.controls.togglePanelCollapsed()
     this.yAxel.setVisible(!this.isCollapsed())
     this.canvas.setVisible(!this.isCollapsed())
-    this.infoPanel.setVisible(this.controls.infoSelected && !this.isCollapsed())
+    this.infoPanel.setPanelVisible(this.controls.infoSelected && !this.isCollapsed())
     this.legend.setMinimized(this.isCollapsed())
   }
 
@@ -223,7 +223,7 @@ export class ChartPanel extends ChartElement<ChartContext> {
 
   private toggleInfoVisible() {
     this.controls.toggleInfoSelected()
-    this.infoPanel.setVisible(this.controls.infoSelected)
+    this.infoPanel.setPanelVisible(this.controls.infoSelected)
   }
 
   private fitYAxel(force: boolean): void {

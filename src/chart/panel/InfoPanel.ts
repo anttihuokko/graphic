@@ -1,31 +1,41 @@
+import { throttle } from 'lodash'
 import { Container } from '@svgdotjs/svg.js'
-import { ChartFrame, TextDef } from '../element/ChartFrame'
 import { PanelContext } from './PanelContext'
-import { Box } from '../../model/Box'
+import { TextDef, TextFrame } from '../../element/TextFrame'
+import { Size } from '../../model/Size'
+import { EventType } from '../Context'
 
-export class InfoPanel extends ChartFrame {
-  private static readonly MARGIN_TOP = 38
-
-  private static readonly MARGIN_LEFT = 6
+export class InfoPanel extends TextFrame {
+  private readonly refreshThrottled = throttle(this.refresh, 200)
 
   private readonly debugTexts: TextDef[]
 
-  constructor(parent: Container, context: PanelContext) {
-    super('chart-info-panel', '', parent, context)
+  constructor(
+    parent: Container,
+    private readonly context: PanelContext
+  ) {
+    super('chart-info-panel', parent)
+    this.border(true).setPadding(new Size(8, 8)).setSize(new Size(280, 70))
     this.addText(context.panelId)
     this.debugTexts = context.getDebugInfo().map((item) => this.addText(this.getDebugItemText(item)))
+    context.addEventListener(EventType.REPOSITION, () => this.refreshThrottled())
+    context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refreshThrottled())
+    context.addEventListener(EventType.REDRAW, () => this.refreshThrottled())
+    context.addEventListener(EventType.VIEW_OFFSET, () => this.refreshThrottled())
   }
 
-  protected positionElements(): Box {
-    if (this.debugTexts) {
+  setPanelVisible(visible: boolean): this {
+    this.setVisible(visible)
+    this.refreshThrottled()
+    return this
+  }
+
+  private refresh() {
+    if (this.isVisible()) {
       this.context.getDebugInfo().forEach((item, index) => this.debugTexts[index].setText(this.getDebugItemText(item)))
+      this.translateTo(this.context.dimensions.drawAreaWidth - this.getSize().width - 10, 40)
+      this.refreshElement()
     }
-    return new Box(
-      this.dimensions.drawAreaWidth - this.size.width - InfoPanel.MARGIN_LEFT,
-      InfoPanel.MARGIN_TOP,
-      300,
-      100
-    )
   }
 
   private getDebugItemText(item: { key: string; value: string | number | object }): string {
