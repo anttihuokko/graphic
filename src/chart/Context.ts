@@ -1,3 +1,4 @@
+import { throttle } from 'lodash'
 import { Box } from '../model/Box'
 import { Size } from '../model/Size'
 import { Symbols } from '../Symbols'
@@ -97,8 +98,11 @@ export abstract class Context {
 
   abstract get dimensions(): Dimensions
 
-  addEventListener(eventType: EventType, callback: () => void): void {
-    this.eventListeners.push({ eventType, callback })
+  addEventListener(eventType: EventType, callback: () => void, throttleWaitTime: number): void {
+    this.eventListeners.push({
+      eventType: eventType,
+      callback: throttleWaitTime > 0 ? throttle(callback, throttleWaitTime) : callback,
+    })
   }
 
   fireEvent(eventType: EventType): void {

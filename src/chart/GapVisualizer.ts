@@ -13,8 +13,8 @@ export class GapVisualizer extends ChartElement<ChartContext> {
     super('chart-gaps-visualizer', parent, context)
     this.gapLinesContainer = this.container.group()
     this.gapLines = this.gapLinesContainer.path().addClass('chart-gap-line')
-    this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.refresh())
-    this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh())
+    this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.refresh(), 100)
+    this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh(), 100)
   }
 
   offset(pixels: number): void {

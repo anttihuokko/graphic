@@ -1,4 +1,3 @@
-import { throttle } from 'lodash'
 import { Container } from '@svgdotjs/svg.js'
 import { PanelContext } from './PanelContext'
 import { TextDef, TextFrame } from '../../element/TextFrame'
@@ -6,8 +5,6 @@ import { Size } from '../../model/Size'
 import { EventType } from '../Context'
 
 export class InfoPanel extends TextFrame {
-  private readonly refreshThrottled = throttle(this.refresh, 200)
-
   private readonly debugTexts: TextDef[]
 
   constructor(
@@ -18,15 +15,15 @@ export class InfoPanel extends TextFrame {
     this.border(true).setPadding(new Size(8, 8)).setSize(new Size(280, 70))
     this.addText(context.panelId)
     this.debugTexts = context.getDebugInfo().map((item) => this.addText(this.getDebugItemText(item)))
-    context.addEventListener(EventType.REPOSITION, () => this.refreshThrottled())
-    context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refreshThrottled())
-    context.addEventListener(EventType.REDRAW, () => this.refreshThrottled())
-    context.addEventListener(EventType.VIEW_OFFSET, () => this.refreshThrottled())
+    context.addEventListener(EventType.REPOSITION, () => this.refresh(), 200)
+    context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh(), 200)
+    context.addEventListener(EventType.REDRAW, () => this.refresh(), 200)
+    context.addEventListener(EventType.VIEW_OFFSET, () => this.refresh(), 200)
   }
 
   setPanelVisible(visible: boolean): this {
     this.setVisible(visible)
-    this.refreshThrottled()
+    this.refresh()
     return this
   }
 

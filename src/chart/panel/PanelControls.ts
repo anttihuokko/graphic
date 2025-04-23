@@ -31,8 +31,8 @@ export class PanelControls extends ChartElement<PanelContext> {
     this.collapseToggleButton2 = new Button(context.symbols.angleUp, 'chart-panel-collapse-toggle', this.container)
     this.maximizeToggleButton = new Button(context.symbols.expand, 'chart-panel-maximize-toggle', this.container)
     this.infoToggleButton = new Button(context.symbols.info, 'chart-panel-info-toggle', this.container)
-    this.context.addEventListener(EventType.REPOSITION, () => this.refresh())
-    this.context.addEventListener(EventType.REDRAW, () => this.refresh())
+    this.context.addEventListener(EventType.REPOSITION, () => this.refresh(), 100)
+    this.context.addEventListener(EventType.REDRAW, () => this.refresh(), 100)
     this.refresh()
   }
 

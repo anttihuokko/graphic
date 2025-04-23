@@ -16,9 +16,9 @@ export class PanelCanvas extends ChartElement<PanelContext> {
   constructor(drawers: ChartDrawer[], parent: Container, context: PanelContext) {
     super('chart-panel-canvas', parent, context)
     this.drawings = drawers.map((drawer) => new Drawing(drawer, this.container))
-    this.context.addEventListener(EventType.REPOSITION, () => this.refresh())
-    this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh())
-    this.context.addEventListener(EventType.REDRAW, () => this.refresh())
+    this.context.addEventListener(EventType.REPOSITION, () => this.refresh(), 100)
+    this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh(), 100)
+    this.context.addEventListener(EventType.REDRAW, () => this.refresh(), 100)
     this.refresh()
   }
 

@@ -25,8 +25,8 @@ class ChartPanelFrame extends ChartElement<PanelContext> {
     super('chart-panel-frame', parent, context)
     this.bg = this.container.rect().addClass('chart-panel-frame-bg').addClass('interactive')
     this.border = this.container.path()
-    this.context.addEventListener(EventType.REPOSITION, () => this.refresh())
-    this.context.addEventListener(EventType.REDRAW, () => this.refresh())
+    this.context.addEventListener(EventType.REPOSITION, () => this.refresh(), 100)
+    this.context.addEventListener(EventType.REDRAW, () => this.refresh(), 100)
     this.refresh()
   }
 
@@ -94,16 +94,24 @@ export class ChartPanel extends ChartElement<ChartContext> {
     this.controls = new PanelControls(this.container, this.panelContext)
     this.legend = new Legend(this.canvas.drawings, this.container, this.panelContext)
     this.dataLoadingIndicator = new DataLoadingIndicator(this.container, this.panelContext)
-    this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.handleCoordinateSystemUpdate())
-    this.context.addEventListener(EventType.HIGHLIGHT_CHANGE, () =>
-      this.panelContext.fireEvent(EventType.HIGHLIGHT_CHANGE)
+    this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.handleCoordinateSystemUpdate(), 0)
+    this.context.addEventListener(
+      EventType.HIGHLIGHT_CHANGE,
+      () => this.panelContext.fireEvent(EventType.HIGHLIGHT_CHANGE),
+      0
     )
-    this.context.addEventListener(EventType.TIME_SERIES_DATA_LOAD_START, () =>
-      this.dataLoadingIndicator.showIndicator()
+    this.context.addEventListener(
+      EventType.TIME_SERIES_DATA_LOAD_START,
+      () => this.dataLoadingIndicator.showIndicator(),
+      0
     )
-    this.context.addEventListener(EventType.TIME_SERIES_DATA_LOAD_STOP, () => this.dataLoadingIndicator.hideIndicator())
-    this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.handleRedraw())
-    this.context.addEventListener(EventType.REDRAW, () => this.handleRedraw())
+    this.context.addEventListener(
+      EventType.TIME_SERIES_DATA_LOAD_STOP,
+      () => this.dataLoadingIndicator.hideIndicator(),
+      0
+    )
+    this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.handleRedraw(), 0)
+    this.context.addEventListener(EventType.REDRAW, () => this.handleRedraw(), 0)
     this.refresh()
   }
 

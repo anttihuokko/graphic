@@ -87,8 +87,8 @@ export class Legend extends ChartElement<PanelContext> {
     this.itemContainer = this.container.group()
     this.label = this.container.text(drawings.length ? drawings[0].legendDef.label : '').move(10, 6)
     this.items = drawings.map((drawing) => new LegendItem(drawing, this.itemContainer))
-    this.context.addEventListener(EventType.HIGHLIGHT_CHANGE, () => this.handleHighlightChange())
-    this.context.addEventListener(EventType.REDRAW, () => this.refresh())
+    this.context.addEventListener(EventType.HIGHLIGHT_CHANGE, () => this.handleHighlightChange(), 100)
+    this.context.addEventListener(EventType.REDRAW, () => this.refresh(), 100)
     this.refresh()
   }
 
@@ -112,6 +112,8 @@ export class Legend extends ChartElement<PanelContext> {
   }
 
   private handleHighlightChange(): void {
+    console.log('!!!!!!!!!!')
+
     this.items.forEach((item) => {
       if (item.isActive()) {
         item.updateInfoText(this.context.highlightTime)

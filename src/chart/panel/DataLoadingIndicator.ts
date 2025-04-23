@@ -11,7 +11,7 @@ export class DataLoadingIndicator extends TextFrame {
   ) {
     super('chart-loading-indicator', parent)
     this.setPadding(new Size(6, 3)).setText('Loading...', TextLocation.CENTER)
-    context.addEventListener(EventType.REPOSITION, () => this.refresh())
+    context.addEventListener(EventType.REPOSITION, () => this.refresh(), 100)
     this.showIndicator()
   }
 

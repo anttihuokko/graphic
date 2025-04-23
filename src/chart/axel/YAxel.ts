@@ -88,7 +88,7 @@ export class YAxel extends Axel<YAxelZoomManager, PanelContext> {
       .addClass('interactive')
       .data('panel-id', context.panelId)
     this.displayValueRange(Range.EMPTY)
-    this.context.addEventListener(EventType.REPOSITION, () => this.refresh())
+    this.context.addEventListener(EventType.REPOSITION, () => this.refresh(), 0)
   }
 
   getVisibleRange(): Range {

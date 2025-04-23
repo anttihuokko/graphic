@@ -66,8 +66,8 @@ export class XAxel extends Axel<XAxelZoomManager, ChartContext> {
     this.tickLines = this.container.path().addClass('chart-grid-tick')
     this.labelContainer = this.container.group().addClass('chart-grid-labels')
     this.grabArea = this.container.rect().addClass('chart-xaxel-grab-area').addClass('interactive')
-    this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.refreshTimeSeriesGaps())
-    this.context.addEventListener(EventType.SETTINGS_UPDATE, () => this.refreshTimeSeriesGaps())
+    this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.refreshTimeSeriesGaps(), 0)
+    this.context.addEventListener(EventType.SETTINGS_UPDATE, () => this.refreshTimeSeriesGaps(), 0)
     this.resetTimeUnit()
     this.moveEndToTime(Time.now().startOf('day'))
   }
