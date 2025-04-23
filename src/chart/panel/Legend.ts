@@ -112,8 +112,6 @@ export class Legend extends ChartElement<PanelContext> {
   }
 
   private handleHighlightChange(): void {
-    console.log('!!!!!!!!!!')
-
     this.items.forEach((item) => {
       if (item.isActive()) {
         item.updateInfoText(this.context.highlightTime)

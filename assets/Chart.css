@@ -51,7 +51,6 @@
 
 .chart-grid-labels {
   fill: #767676;
-  font-family: 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif;
   font-size: 12px;
   font-weight: 400;
 }
@@ -160,7 +159,6 @@
   font-size: 12px;
   font-weight: bold;
   fill: rgb(172, 17, 17);
-  font-family: 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif;
 }
 
 /***
