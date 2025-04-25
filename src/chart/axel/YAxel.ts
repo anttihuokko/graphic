@@ -1,4 +1,3 @@
-import { round } from 'lodash'
 import { Container, Path, G, Text, Rect } from '@svgdotjs/svg.js'
 import { Axel, ValueFormatter } from './Axel'
 import { GraphicEvent } from '../../GraphicEvent'
@@ -9,6 +8,7 @@ import { ZoomManager } from './ZoomManager'
 import { getGridDefinition } from './GridDefinition'
 import { Box } from '../../model/Box'
 import { Range } from '../../model/Range'
+import { MathUtil } from '../../internal/MathUtil'
 
 class YAxelValueFormatter implements ValueFormatter {
   private readonly scale: number
@@ -92,7 +92,7 @@ export class YAxel extends Axel<YAxelZoomManager, PanelContext> {
   }
 
   getVisibleRange(): Range {
-    return new Range(round(this.getGridStartValue(), 3), round(this.getGridEndValue(), 3))
+    return new Range(MathUtil.round(this.getGridStartValue(), 3), MathUtil.round(this.getGridEndValue(), 3))
   }
 
   toPixel(value: number): number {

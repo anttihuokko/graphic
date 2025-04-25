@@ -1,5 +1,3 @@
-import { map } from 'lodash'
-
 export class Range {
   static readonly EMPTY = new Range(0, 0)
 
@@ -18,7 +16,7 @@ export class Range {
     if (!ranges.length) {
       return Range.EMPTY
     }
-    return new Range(Math.min(...map(ranges, (range) => range.start)), Math.max(...map(ranges, (range) => range.end)))
+    return new Range(Math.min(...ranges.map((range) => range.start)), Math.max(...ranges.map((range) => range.end)))
   }
 
   constructor(v1: number, v2: number | null = null) {

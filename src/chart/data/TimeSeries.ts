@@ -1,15 +1,17 @@
-import { has, get, chain } from 'lodash'
 import { MathUtil } from '../../internal/MathUtil'
 import { Time, Duration } from '../../model/Time'
 import { Interval } from '../../model/Interval'
 import { DateTime } from 'luxon'
+import { Util } from '../../internal/Util'
 
 export function toTimeSeriesItems(timeField: string, data: unknown[]) {
-  return chain(data)
-    .map((entry) => new TimeSeriesItem(timeField, entry))
-    .uniqBy((item) => item.timestamp)
-    .sortBy((item) => item.timestamp)
-    .value()
+  return Util.sortBy(
+    Util.uniqBy(
+      data.map((entry) => new TimeSeriesItem(timeField, entry)),
+      (item) => item.timestamp
+    ),
+    (item) => item.timestamp
+  )
 }
 
 export class TimeSeriesSection {
@@ -125,7 +127,7 @@ export class TimeSeriesItem implements DataAccessor {
   }
 
   hasAllValues(fields: string[]): boolean {
-    return fields.filter((field) => has(this.data, field)).length === fields.length
+    return fields.filter((field) => Util.hasValue(field, this.data)).length === fields.length
   }
 
   getNumberValue(field: string, defaultValue: number | null = null): number {
@@ -145,7 +147,7 @@ export class TimeSeriesItem implements DataAccessor {
     typeName: N,
     defaultValue: T | null = null
   ): T {
-    const value = (get(this.data, field) as unknown) ?? defaultValue
+    const value = (Util.getValue(field, this.data) as unknown) ?? defaultValue
     if (value == null) {
       throw Error(`No data value exist for field '${field}' in item ${JSON.stringify(this)}`)
     }

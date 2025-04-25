@@ -1,9 +1,9 @@
-import { first, last } from 'lodash'
 import { TimeSeries, TimeSeriesItem, TimeSeriesItemSlice, TimeSeriesSection } from './TimeSeries'
 import { TimeSeriesDataQuery } from './TimeSeriesDataQuery'
 import { TimeSeriesDataRequest, TimeSeriesDataRequestType } from './TimeSeriesDataRequest'
 import { Interval } from '../../model/Interval'
 import { Time, Duration } from '../../model/Time'
+import { Util } from '../../internal/Util'
 
 export class TimeSeriesDataCache {
   private timeSeries = TimeSeries.createEmpty(Duration.forDays(1))
@@ -101,7 +101,7 @@ export class TimeSeriesDataCache {
   }
 
   private handleLeftExpand(requestSection: TimeSeriesSection, items: TimeSeriesItem[]): void {
-    const lastItem = last(items)
+    const lastItem = Util.last(items)
     const slice = lastItem
       ? this.timeSeries.getItemSlice(new TimeSeriesSection(lastItem.time, 0, Number.MAX_VALUE))
       : null
@@ -113,7 +113,7 @@ export class TimeSeriesDataCache {
   }
 
   private handleRigthExpand(requestSection: TimeSeriesSection, items: TimeSeriesItem[]): void {
-    const firstItem = first(items)
+    const firstItem = Util.first(items)
     const slice = firstItem
       ? this.timeSeries.getItemSlice(new TimeSeriesSection(firstItem.time, Number.MAX_VALUE, 0))
       : null

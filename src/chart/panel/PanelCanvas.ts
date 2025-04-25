@@ -6,9 +6,9 @@ import { EventType } from '../Context'
 import { Drawing } from './Drawing'
 import { MathUtil } from '../../internal/MathUtil'
 import { ChartMarker } from '../drawer/ChartMarker'
-import { ArrayUtil } from '../../internal/ArrayUtil'
 import { Box } from '../../model/Box'
 import { Range } from '../../model/Range'
+import { Util } from '../../internal/Util'
 
 export class PanelCanvas extends ChartElement<PanelContext> {
   readonly drawings: Drawing[]
@@ -34,7 +34,7 @@ export class PanelCanvas extends ChartElement<PanelContext> {
   }
 
   getChartMarker(id: number): ChartMarker {
-    const result = ArrayUtil.findMappedValue(this.drawings, (drawing) => drawing.findChartMarker(id))
+    const result = Util.findMappedValue(this.drawings, (drawing) => drawing.findChartMarker(id))
     if (!result) {
       throw Error(`No chart marker with id ${id}`)
     }

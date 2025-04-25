@@ -1,4 +1,3 @@
-import { throttle } from 'lodash'
 import { G } from '@svgdotjs/svg.js'
 import {
   GraphicClickEvent,
@@ -22,11 +21,12 @@ import { TimeSeries } from './data/TimeSeries'
 import { GapVisualizer } from './GapVisualizer'
 import { Interval } from '../model/Interval'
 import { ChartSettings, DEFAULT_CHART_SETTINGS } from './ChartSettings'
+import { Util } from '../internal/Util'
 
 export class TimeSeriesChart extends Chart {
-  private readonly handleHoverEventThrottled = throttle(this.handleHoverEvent, 50)
+  private readonly handleHoverEventThrottled = Util.throttle(this.handleHoverEvent, 50)
 
-  private readonly zoomXAxelThrottled = throttle(this.zoomXAxel, 50)
+  private readonly zoomXAxelThrottled = Util.throttle(this.zoomXAxel, 50)
 
   private readonly xAxel: XAxel
 

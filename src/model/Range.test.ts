@@ -7,6 +7,7 @@ describe('Range', () => {
   })
 
   test('should get max Range for Range array', () => {
+    expect(Range.max([]).isSame(Range.EMPTY)).toBe(true)
     expect(Range.max([new Range(1, 1)]).isSame(new Range(1, 1))).toBe(true)
     expect(
       Range.max([new Range(1, 1), new Range(-10, 5), new Range(6, 10), new Range(-8, 8)]).isSame(new Range(-10, 10))

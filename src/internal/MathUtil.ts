@@ -35,4 +35,12 @@ export class MathUtil {
   static middle(l1: ScreenLocation, l2: ScreenLocation): ScreenLocation {
     return new ScreenLocation((l1.x + l2.x) / 2, (l1.y + l2.y) / 2)
   }
+
+  static round(value: number, precision: number = 0): number {
+    if (precision <= 0) {
+      return Math.round(value)
+    }
+    const multiplier = 10 ** precision
+    return Math.round(value * multiplier) / multiplier
+  }
 }

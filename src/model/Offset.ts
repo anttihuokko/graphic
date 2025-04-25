@@ -1,4 +1,4 @@
-import { round } from 'lodash'
+import { MathUtil } from '../internal/MathUtil'
 
 export class Offset {
   static readonly ZERO = new Offset(0, 0)
@@ -27,6 +27,6 @@ export class Offset {
   }
 
   round(precision: number = 0): Offset {
-    return new Offset(round(this.x, precision), round(this.y, precision))
+    return new Offset(MathUtil.round(this.x, precision), MathUtil.round(this.y, precision))
   }
 }

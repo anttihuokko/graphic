@@ -1,6 +1,5 @@
 import { Container, Point, Shape } from '@svgdotjs/svg.js'
 import { GraphicClickEvent } from '../../GraphicEvent'
-import { ArrayUtil } from '../../internal/ArrayUtil'
 import { DataAccessor, TimeSeriesItem, toTimeSeriesItems } from '../data/TimeSeries'
 import { ChartDrawer, DrawingItem, LegendDef } from './ChartDrawer'
 import { ChartMarker, MarkerClickCallback } from './ChartMarker'
@@ -12,6 +11,7 @@ import { Box } from '../../model/Box'
 import { Range } from '../../model/Range'
 import { Time } from '../../model/Time'
 import { Interval } from '../../model/Interval'
+import { Util } from '../../internal/Util'
 
 export enum Direction {
   UP = 0,
@@ -410,7 +410,7 @@ export class CustomChartDrawer implements ChartDrawer {
   }
 
   findChartMarker(id: number): ChartMarker | undefined {
-    return ArrayUtil.findMappedValue(this.shapes, (shape) =>
+    return Util.findMappedValue(this.shapes, (shape) =>
       this.isChartMarker(shape) && shape.markerId === id ? shape : undefined
     )
   }

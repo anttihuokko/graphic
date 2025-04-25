@@ -1,7 +1,7 @@
-import { throttle } from 'lodash'
+import { Util } from './Util'
 
 export class NativeResizeObserver {
-  private readonly handleResizeThrottled = throttle(this.onResize, 400)
+  private readonly handleResizeThrottled = Util.throttle(this.onResize, 400)
 
   private resizeObserver: ResizeObserver | null = null
 
@@ -23,7 +23,7 @@ export class NativeResizeObserver {
 }
 
 export class PollingResizeObserver {
-  private readonly handleResizeThrottled = throttle(this.handleResize.bind(this), 400)
+  private readonly handleResizeThrottled = Util.throttle(this.handleResize.bind(this), 400)
 
   private width: number = 0
 

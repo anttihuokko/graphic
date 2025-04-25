@@ -1,10 +1,10 @@
 import { Container } from '@svgdotjs/svg.js'
-import { ArrayUtil } from '../../internal/ArrayUtil'
 import { DataAccessor } from '../data/TimeSeries'
 import { ChartDrawer, DrawingItem, LegendDef } from './ChartDrawer'
 import { ChartMarker } from './ChartMarker'
 import { DrawerContext } from './DrawerContext'
 import { Range } from '../../model/Range'
+import { Util } from '../../internal/Util'
 
 export class GroupDrawer implements ChartDrawer {
   private readonly drawers: ChartDrawer[]
@@ -52,7 +52,7 @@ export class GroupDrawer implements ChartDrawer {
   }
 
   findChartMarker(id: number): ChartMarker | undefined {
-    return ArrayUtil.findMappedValue(this.drawers, (drawer) => drawer.findChartMarker(id))
+    return Util.findMappedValue(this.drawers, (drawer) => drawer.findChartMarker(id))
   }
 
   createDrawing(items: DrawingItem[], container: Container): void {

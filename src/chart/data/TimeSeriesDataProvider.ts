@@ -1,4 +1,3 @@
-import { pull } from 'lodash'
 import { TimeSeriesItemSlice } from './TimeSeries'
 import { TimeSeriesDataCache } from './TimeSeriesDataCache'
 import { TimeSeriesDataQuery } from './TimeSeriesDataQuery'
@@ -6,6 +5,7 @@ import { TimeSeriesDataSource } from './TimeSeriesDataSource'
 import { TimeSeriesDataRequest } from './TimeSeriesDataRequest'
 import { Time } from '../../model/Time'
 import { Interval } from '../../model/Interval'
+import { Util } from '../../internal/Util'
 
 export class TimeSeriesDataProvider {
   private readonly cache = new TimeSeriesDataCache()
@@ -104,7 +104,7 @@ export class TimeSeriesDataProvider {
     if (this.isActiveQuery(queryId)) {
       const activeRequest = this.getActiveRequest(request.id)
       if (activeRequest) {
-        pull(this.activeRequests, activeRequest)
+        Util.pull(this.activeRequests, activeRequest)
         this.requestFinished(request.id, request.section.time)
       }
     }

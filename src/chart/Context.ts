@@ -1,8 +1,8 @@
-import { throttle } from 'lodash'
 import { Box } from '../model/Box'
 import { Size } from '../model/Size'
 import { Symbols } from '../Symbols'
 import { ChartSettings } from './ChartSettings'
+import { Util } from '../internal/Util'
 
 export class Dimensions {
   static readonly EMPTY = new Dimensions(Size.ZERO, Box.EMPTY, Size.ZERO)
@@ -101,7 +101,7 @@ export abstract class Context {
   addEventListener(eventType: EventType, callback: () => void, throttleWaitTime: number): void {
     this.eventListeners.push({
       eventType: eventType,
-      callback: throttleWaitTime > 0 ? throttle(callback, throttleWaitTime) : callback,
+      callback: throttleWaitTime > 0 ? Util.throttle(callback, throttleWaitTime) : callback,
     })
   }
 

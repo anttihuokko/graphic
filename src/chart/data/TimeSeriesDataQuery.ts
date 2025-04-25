@@ -1,9 +1,9 @@
-import { uniqueId } from 'lodash'
 import { TimeSeriesSection } from './TimeSeries'
 import { Duration } from '../../model/Time'
+import { Util } from '../../internal/Util'
 
 export class TimeSeriesDataQuery {
-  readonly id: string = uniqueId('QUERY-')
+  readonly id: string = Util.uniqueId('QUERY-')
 
   private readonly promise: Promise<void>
 

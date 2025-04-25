@@ -1,7 +1,7 @@
-import { uniqueId } from 'lodash'
 import { TimeSeriesItem, TimeSeriesSection, toTimeSeriesItems } from './TimeSeries'
 import { TimeSeriesDataSource } from './TimeSeriesDataSource'
 import { Time } from '../../model/Time'
+import { Util } from '../../internal/Util'
 
 export enum TimeSeriesDataRequestType {
   LEFT_EXPAND,
@@ -25,7 +25,7 @@ export class TimeSeriesDataRequest {
     )
   }
 
-  readonly id: string = uniqueId('REQUEST-')
+  readonly id: string = Util.uniqueId('REQUEST-')
 
   private constructor(
     readonly type: TimeSeriesDataRequestType,
