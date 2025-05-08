@@ -6,10 +6,10 @@ import { createDataSource } from './DataSource'
 export const component: TestComponent = {
   title: 'Custom Test',
   create: (container: HTMLDivElement) => {
-    const chart = new TimeSeriesChart(container, Duration.forDays(1), createDataSource())
+    const chart = new TimeSeriesChart(container, Duration.forDays(1), createDataSource(false))
     chart.updateSettings({
-      gapsRemoved: true,
-      gapsVisualized: true,
+      gapsRemoved: false,
+      gapsVisualized: false,
       debugInfoVisible: true,
     })
     chart.addPanel([new LineChartDrawer('Line', Color.GREEN, 'value2')])

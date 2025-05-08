@@ -167,7 +167,9 @@ export class XAxel extends Axel<XAxelZoomManager, ChartContext> {
     const defs = this.getGridLineDefinitions()
     this.labels.forEach((label, index) => {
       const def = defs[index]
-      label.text(def.label).cx(def.position)
+      if (def) {
+        label.text(def.label).cx(def.position)
+      }
     })
   }
 

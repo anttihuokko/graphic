@@ -22,6 +22,7 @@ import { GapVisualizer } from './GapVisualizer'
 import { Interval } from '../model/Interval'
 import { ChartSettings, DEFAULT_CHART_SETTINGS } from './ChartSettings'
 import { Util } from '../internal/Util'
+import { Size } from '../model/Size'
 
 export class TimeSeriesChart extends Chart {
   private readonly handleHoverEventThrottled = Util.throttle(this.handleHoverEvent, 50)
@@ -149,12 +150,21 @@ export class TimeSeriesChart extends Chart {
   }
 
   private refresh(forceDataReset: boolean = false): void {
-    this.context.updateDimensions(this.size)
+    this.updateDimensions(this.size)
     if (this.panels.length) {
       this.refreshPanels()
     }
     this.gapVisualizer.refresh()
     this.updateDataIfNeeded(forceDataReset)
+  }
+
+  private updateDimensions(viewSize: Size): void {
+    const time = this.xAxel.getVisibleMiddleTime()
+    const widthChanged = viewSize.width !== this.context.dimensions.viewSize.width
+    this.context.updateDimensions(viewSize)
+    if (widthChanged) {
+      this.xAxel.moveCenterToTime(time)
+    }
   }
 
   private refreshPanels(): void {
@@ -198,6 +208,9 @@ export class TimeSeriesChart extends Chart {
       this.context.clearTimeSeries()
     }
     const section = this.xAxel.getVisibleTimeSeriesSection()
+    if (section.size <= 5) {
+      return
+    }
     if (this.context.timeSeries.hasFullItemSection(section.expandBy(1.2))) {
       return
     }

@@ -13,7 +13,7 @@ import { createDataSource } from './DataSource'
 export const component: TestComponent = {
   title: 'Gap Test',
   create: (container: HTMLDivElement) => {
-    const chart = new TimeSeriesChart(container, Duration.forDays(1), createDataSource())
+    const chart = new TimeSeriesChart(container, Duration.forDays(1), createDataSource(true))
     chart.updateSettings({
       gapsRemoved: true,
       gapsVisualized: true,

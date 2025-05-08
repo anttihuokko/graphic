@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { TimeSeriesDataSource } from '../../../src'
 
-export function createDataSource(): TimeSeriesDataSource {
+export function createDataSource(gaps: boolean): TimeSeriesDataSource {
   return {
     timeField: 'time',
     load: (time, beforeCount, afterCount, requestId) => {
@@ -12,7 +12,7 @@ export function createDataSource(): TimeSeriesDataSource {
         let offset = -beforeCount
         while (result.length < requiredCount) {
           const currentTime = time.toDateTime().plus({ days: offset })
-          if (!getGapTimesForTest2().some((gapTime) => currentTime.equals(gapTime))) {
+          if (!gaps || !getGapTimesForTest2().some((gapTime) => currentTime.equals(gapTime))) {
             result.push({
               time: currentTime.toISO() ?? '',
               // value: 100
