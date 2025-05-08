@@ -39,15 +39,12 @@ describe('Util', () => {
   })
 
   test('should throttle', async () => {
-    const calls1 = await callThrottledFunction(5, [10, 20, 30, 40, 50], 200)
+    const calls1 = await callThrottledFunction(50, [100, 200, 300, 400, 500], 1000)
     expect(calls1.map((call) => call.callId)).toEqual([1, 2, 3, 4, 5])
-
     const calls2 = await callThrottledFunction(100, [10, 20, 30, 40, 50], 200)
     expect(calls2.map((call) => call.callId)).toEqual([1, 5])
-
     const calls3 = await callThrottledFunction(50, [10, 20, 30, 90, 100], 200)
     expect(calls3.map((call) => call.callId)).toEqual([1, 3, 5])
-
     const calls4 = await callThrottledFunction(50, [10, 20, 30, 90, 140], 200)
     expect(calls4.map((call) => call.callId)).toEqual([1, 3, 4, 5])
   })

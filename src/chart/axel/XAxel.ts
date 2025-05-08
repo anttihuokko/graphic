@@ -138,29 +138,23 @@ export class XAxel extends Axel<XAxelZoomManager, ChartContext> {
   }
 
   protected refresh() {
-    this.clip(
-      new Box(
-        this.dimensions.marginLeft,
-        this.dimensions.marginTop,
-        this.dimensions.drawAreaWidth,
-        this.dimensions.viewHeight
-      )
-    )
+    const dimensions = this.context.dimensions
+    this.clip(new Box(dimensions.marginLeft, dimensions.marginTop, dimensions.drawAreaWidth, dimensions.viewHeight))
     this.labels.length = 0
     this.labelContainer.clear()
     let gridLinesPathDefinition = ''
     let ticksPathDefinition = ''
     this.getGridLineDefinitions().forEach((def) => {
-      gridLinesPathDefinition += `M${def.position} 0 V${this.dimensions.drawAreaHeight}`
+      gridLinesPathDefinition += `M${def.position} 0 V${dimensions.drawAreaHeight}`
       ticksPathDefinition += `M${def.position} 0 V${XAxel.TICK_SIZE}`
       this.labels.push(this.labelContainer.text(def.label).cx(def.position).y(0))
     })
-    this.gridLines.plot(gridLinesPathDefinition).y(this.dimensions.drawAreaTop)
-    this.tickLines.plot(ticksPathDefinition).y(this.dimensions.drawAreaBottom)
-    this.labelContainer.y(this.dimensions.drawAreaBottom + 7)
+    this.gridLines.plot(gridLinesPathDefinition).y(dimensions.drawAreaTop)
+    this.tickLines.plot(ticksPathDefinition).y(dimensions.drawAreaBottom)
+    this.labelContainer.y(dimensions.drawAreaBottom + 7)
     this.grabArea
-      .size(this.dimensions.viewWidth * 2, this.dimensions.marginBottom)
-      .move(-this.dimensions.viewWidth / 2, this.dimensions.drawAreaBottom)
+      .size(dimensions.viewWidth * 2, dimensions.marginBottom)
+      .move(-dimensions.viewWidth / 2, dimensions.drawAreaBottom)
   }
 
   protected updateLabels(): void {

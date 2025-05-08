@@ -1,11 +1,11 @@
 import { Container, Rect } from '@svgdotjs/svg.js'
 import { EventType } from '../Context'
 import { Button } from '../../element/Button'
-import { ChartElement } from '../element/ChartElement'
 import { PanelState } from './ChartPanel'
 import { PanelContext } from './PanelContext'
+import { GraphicElement } from '../../element/GraphicElement'
 
-export class PanelControls extends ChartElement<PanelContext> {
+export class PanelControls extends GraphicElement {
   private static readonly MARGIN = 8
 
   private static readonly SPACING = 38
@@ -24,8 +24,11 @@ export class PanelControls extends ChartElement<PanelContext> {
 
   private currentInfoSelected = false
 
-  constructor(parent: Container, context: PanelContext) {
-    super('chart-panel-controls', parent, context)
+  constructor(
+    parent: Container,
+    private readonly context: PanelContext
+  ) {
+    super('chart-panel-controls', parent)
     this.mask = this.container.rect().addClass('mask').hide()
     this.collapseToggleButton1 = new Button(context.symbols.angleDown, 'chart-panel-collapse-toggle', this.container)
     this.collapseToggleButton2 = new Button(context.symbols.angleUp, 'chart-panel-collapse-toggle', this.container)
@@ -76,9 +79,10 @@ export class PanelControls extends ChartElement<PanelContext> {
   private refresh(): void {
     this.translateTo(1, 1)
     if (this.currentPanelState === PanelState.COLLAPSED) {
+      const dimensions = this.context.dimensions
       this.mask
         .move(1, 1)
-        .size(this.dimensions.drawAreaWidth - 2, this.dimensions.drawAreaHeight - 2)
+        .size(dimensions.drawAreaWidth - 2, dimensions.drawAreaHeight - 2)
         .show()
       this.collapseToggleButton1.hide()
       this.collapseToggleButton2.show()
@@ -108,7 +112,7 @@ export class PanelControls extends ChartElement<PanelContext> {
       .filter((button) => button.isVisible())
       .forEach((button, index, visibleButtons) => {
         const position = visibleButtons.length - index
-        button.translateTo(this.dimensions.drawAreaWidth - PanelControls.SPACING * position, marginTop)
+        button.translateTo(this.context.dimensions.drawAreaWidth - PanelControls.SPACING * position, marginTop)
       })
   }
 }

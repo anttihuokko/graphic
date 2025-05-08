@@ -1,7 +1,6 @@
 import { Container, Path, Rect } from '@svgdotjs/svg.js'
 import { YAxel } from '../axel/YAxel'
 import { ChartContext } from '../ChartContext'
-import { ChartElement } from '../element/ChartElement'
 import { PanelCanvas } from './PanelCanvas'
 import { InfoPanel } from './InfoPanel'
 import { PanelContext } from './PanelContext'
@@ -15,14 +14,18 @@ import { ChartMarker } from '../drawer/ChartMarker'
 import { DrawerContext } from '../drawer/DrawerContext'
 import { DataLoadingIndicator } from './DataLoadingIndicator'
 import { Offset } from '../../model/Offset'
+import { GraphicElement } from '../../element/GraphicElement'
 
-class ChartPanelFrame extends ChartElement<PanelContext> {
+class ChartPanelFrame extends GraphicElement {
   private readonly bg: Rect
 
   private readonly border: Path
 
-  constructor(parent: Container, context: PanelContext) {
-    super('chart-panel-frame', parent, context)
+  constructor(
+    parent: Container,
+    private readonly context: PanelContext
+  ) {
+    super('chart-panel-frame', parent)
     this.bg = this.container.rect().addClass('chart-panel-frame-bg').addClass('interactive')
     this.border = this.container.path()
     this.context.addEventListener(EventType.REPOSITION, () => this.refresh(), 100)
@@ -32,12 +35,13 @@ class ChartPanelFrame extends ChartElement<PanelContext> {
 
   private refresh(): void {
     this.translateTo(1, 1)
-    this.bg.move(1, 1).size(this.dimensions.drawAreaWidth - 2, this.dimensions.drawAreaHeight - 2)
+    const dimensions = this.context.dimensions
+    this.bg.move(1, 1).size(dimensions.drawAreaWidth - 2, dimensions.drawAreaHeight - 2)
     this.border.plot(`
-      ${this.context.firstPanel ? `M 0 0 H ${this.dimensions.drawAreaWidth}` : ''}
-      M 0 ${this.dimensions.drawAreaHeight} H ${this.dimensions.drawAreaWidth + 44}
-      M 0 0 V ${this.dimensions.drawAreaHeight}
-      M ${this.dimensions.drawAreaRight - 1} 0 V ${this.dimensions.drawAreaHeight + (this.context.lastPanel ? 24 : 0)}
+      ${this.context.firstPanel ? `M 0 0 H ${dimensions.drawAreaWidth}` : ''}
+      M 0 ${dimensions.drawAreaHeight} H ${dimensions.drawAreaWidth + 44}
+      M 0 0 V ${dimensions.drawAreaHeight}
+      M ${dimensions.drawAreaRight - 1} 0 V ${dimensions.drawAreaHeight + (this.context.lastPanel ? 24 : 0)}
     `)
   }
 }
@@ -48,7 +52,7 @@ export enum PanelState {
   MAXIMIZED,
 }
 
-export class ChartPanel extends ChartElement<ChartContext> {
+export class ChartPanel extends GraphicElement {
   static readonly COLLAPSED_HEIGHT = 32
 
   static readonly PANEL_SIZE_RATIOS: { [key: number]: number[] } = {
@@ -80,8 +84,12 @@ export class ChartPanel extends ChartElement<ChartContext> {
 
   private focusedChartMarker: ChartMarker | null = null
 
-  constructor(drawers: ChartDrawer[], parent: Container, context: ChartContext) {
-    super('chart-panel', parent, context)
+  constructor(
+    drawers: ChartDrawer[],
+    parent: Container,
+    private readonly context: ChartContext
+  ) {
+    super('chart-panel', parent)
     this.panelContext = new PanelContext(
       (value) => this.yAxel.toPixel(value),
       () => this.createDebugInfo(),
@@ -152,9 +160,10 @@ export class ChartPanel extends ChartElement<ChartContext> {
   update(visible: boolean, top: number, height: number): void {
     if (visible) {
       this.container.show()
+      const dimensions = this.context.dimensions
       this.panelContext.updateDimensions(
-        this.dimensions.drawAreaTop === top,
-        this.dimensions.drawAreaBottom === top + height,
+        dimensions.drawAreaTop === top,
+        dimensions.drawAreaBottom === top + height,
         top,
         height
       )

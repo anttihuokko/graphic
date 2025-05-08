@@ -1,7 +1,6 @@
 import { Container } from '@svgdotjs/svg.js'
 import { ChartDrawer, DrawingItem } from '../drawer/ChartDrawer'
 import { PanelContext } from './PanelContext'
-import { ChartElement } from '../element/ChartElement'
 import { EventType } from '../Context'
 import { Drawing } from './Drawing'
 import { MathUtil } from '../../internal/MathUtil'
@@ -9,12 +8,17 @@ import { ChartMarker } from '../drawer/ChartMarker'
 import { Box } from '../../model/Box'
 import { Range } from '../../model/Range'
 import { Util } from '../../internal/Util'
+import { GraphicElement } from '../../element/GraphicElement'
 
-export class PanelCanvas extends ChartElement<PanelContext> {
+export class PanelCanvas extends GraphicElement {
   readonly drawings: Drawing[]
 
-  constructor(drawers: ChartDrawer[], parent: Container, context: PanelContext) {
-    super('chart-panel-canvas', parent, context)
+  constructor(
+    drawers: ChartDrawer[],
+    parent: Container,
+    private readonly context: PanelContext
+  ) {
+    super('chart-panel-canvas', parent)
     this.drawings = drawers.map((drawer) => new Drawing(drawer, this.container))
     this.context.addEventListener(EventType.REPOSITION, () => this.refresh(), 100)
     this.context.addEventListener(EventType.COORDINATE_SYSTEM_UPDATE, () => this.refresh(), 100)
@@ -42,7 +46,7 @@ export class PanelCanvas extends ChartElement<PanelContext> {
   }
 
   private refresh(): void {
-    this.clip(this.dimensions.drawArea.move(1, 1))
+    this.clip(this.context.dimensions.drawArea.move(1, 1))
     this.untransform()
     const items = this.getDrawingItems()
     this.drawings.forEach((drawing) => drawing.createDrawing(items))

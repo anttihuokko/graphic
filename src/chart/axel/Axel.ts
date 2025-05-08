@@ -1,16 +1,16 @@
 import { Container } from '@svgdotjs/svg.js'
 import { Context } from '../Context'
-import { ChartElement } from '../element/ChartElement'
 import { HighlightValue } from '../HighlightManager'
 import { ZoomManager } from './ZoomManager'
 import { Range } from '../../model/Range'
 import { AxelGrid, GridLineDefinition } from './AxelGrid'
+import { GraphicElement } from '../../element/GraphicElement'
 
 export interface ValueFormatter {
   format(value: number, longFormat: boolean): string
 }
 
-export abstract class Axel<ZM extends ZoomManager, CTX extends Context> extends ChartElement<CTX> {
+export abstract class Axel<ZM extends ZoomManager, CTX extends Context> extends GraphicElement {
   private grid: AxelGrid<ZM>
 
   private valueFormatter: ValueFormatter = {
@@ -26,9 +26,9 @@ export abstract class Axel<ZM extends ZoomManager, CTX extends Context> extends 
     zoomManager: ZM,
     className: string,
     parent: Container,
-    context: CTX
+    protected readonly context: CTX
   ) {
-    super(className, parent, context)
+    super(className, parent)
     this.grid = new AxelGrid(horizontal, gridlInverted, gridOffsetUnits, zoomManager, context)
   }
 

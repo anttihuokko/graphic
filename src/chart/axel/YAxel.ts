@@ -100,7 +100,7 @@ export class YAxel extends Axel<YAxelZoomManager, PanelContext> {
   }
 
   toHighlightValue(event: GraphicEvent): HighlightValue {
-    return this.getHighlightValue(event.documentPoint.y, -this.dimensions.drawAreaTop + 1, false)
+    return this.getHighlightValue(event.documentPoint.y, -this.context.dimensions.drawAreaTop + 1, false)
   }
 
   offset(pixels: number, callback: () => void = () => undefined): void {
@@ -140,24 +140,25 @@ export class YAxel extends Axel<YAxelZoomManager, PanelContext> {
   }
 
   protected refresh(): void {
-    this.clip(new Box(1, 1, this.dimensions.viewWidth, this.dimensions.drawAreaHeight))
+    const dimensions = this.context.dimensions
+    this.clip(new Box(1, 1, dimensions.viewWidth, dimensions.drawAreaHeight))
     this.labels.length = 0
     this.labelContainer.clear()
     let gridLinesPathDefinition = ''
     let ticksPathDefinition = ''
     this.getGridLineDefinitions().forEach((def) => {
-      gridLinesPathDefinition += `M0 ${def.position} H${this.dimensions.drawAreaWidth}`
+      gridLinesPathDefinition += `M0 ${def.position} H${dimensions.drawAreaWidth}`
       ticksPathDefinition += `M0 ${def.position} H${YAxel.TICK_SIZE}`
       this.labels.push(this.labelContainer.text(def.label).cy(def.position))
     })
     this.gridLines.plot(gridLinesPathDefinition)
     const gridLinesHeight = this.gridLines.bbox().height
-    this.gridLines.move(this.dimensions.drawAreaLeft, this.height - gridLinesHeight)
-    this.tickLines.plot(ticksPathDefinition).move(this.dimensions.drawAreaRight, this.height - gridLinesHeight)
-    this.labelContainer.untransform().translate(this.dimensions.drawAreaRight + 8, 0)
+    this.gridLines.move(dimensions.drawAreaLeft, this.height - gridLinesHeight)
+    this.tickLines.plot(ticksPathDefinition).move(dimensions.drawAreaRight, this.height - gridLinesHeight)
+    this.labelContainer.untransform().translate(dimensions.drawAreaRight + 8, 0)
     this.grabArea
-      .size(this.dimensions.marginRight, this.dimensions.viewHeight * 2)
-      .move(this.dimensions.drawAreaRight, -this.dimensions.viewHeight / 2)
+      .size(dimensions.marginRight, dimensions.viewHeight * 2)
+      .move(dimensions.drawAreaRight, -dimensions.viewHeight / 2)
   }
 
   protected updateLabels(): void {
@@ -166,11 +167,11 @@ export class YAxel extends Axel<YAxelZoomManager, PanelContext> {
   }
 
   private get height(): number {
-    return this.dimensions.drawAreaHeight
+    return this.context.dimensions.drawAreaHeight
   }
 
   private displayValueRange(valueRange: Range) {
-    this.getZoomManager().updateForValueRange(valueRange, this.dimensions.drawAreaHeight)
+    this.getZoomManager().updateForValueRange(valueRange, this.context.dimensions.drawAreaHeight)
     this.moveToValue(valueRange.start, true)
     this.setValueFormatter(new YAxelValueFormatter(this.getVisibleRange()))
     this.refresh()

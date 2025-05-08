@@ -1,16 +1,19 @@
 import { Container, G, Path } from '@svgdotjs/svg.js'
 import { ChartContext } from './ChartContext'
-import { ChartElement } from './element/ChartElement'
 import { EventType } from './Context'
 import { Box } from '../model/Box'
+import { GraphicElement } from '../element/GraphicElement'
 
-export class GapVisualizer extends ChartElement<ChartContext> {
+export class GapVisualizer extends GraphicElement {
   private readonly gapLinesContainer: G
 
   private readonly gapLines: Path
 
-  constructor(parent: Container, context: ChartContext) {
-    super('chart-gaps-visualizer', parent, context)
+  constructor(
+    parent: Container,
+    private readonly context: ChartContext
+  ) {
+    super('chart-gaps-visualizer', parent)
     this.gapLinesContainer = this.container.group()
     this.gapLines = this.gapLinesContainer.path().addClass('chart-gap-line')
     this.context.addEventListener(EventType.TIME_SERIES_DATA_UPDATE, () => this.refresh(), 100)
@@ -24,14 +27,8 @@ export class GapVisualizer extends ChartElement<ChartContext> {
   refresh() {
     this.setVisible(this.context.settings.gapsVisualized)
     if (this.isVisible()) {
-      this.clip(
-        new Box(
-          this.dimensions.marginLeft,
-          this.dimensions.marginTop,
-          this.dimensions.drawAreaWidth,
-          this.dimensions.viewHeight
-        )
-      )
+      const dimensions = this.context.dimensions
+      this.clip(new Box(dimensions.marginLeft, dimensions.marginTop, dimensions.drawAreaWidth, dimensions.viewHeight))
       const gaps = this.context.timeSeries.getGaps()
       if (!gaps.length) {
         this.gapLinesContainer.hide()
@@ -39,9 +36,9 @@ export class GapVisualizer extends ChartElement<ChartContext> {
         const offsetDuration = this.context.timeSeries.timeUnitDuration.divide(2)
         const gapLineDefinition = gaps.reduce((acc, gap) => {
           const time = gap.endTime.minus(offsetDuration)
-          return acc + `M${this.context.toPixel(time)} 0 V${this.dimensions.drawAreaHeight + 6}`
+          return acc + `M${this.context.toPixel(time)} 0 V${dimensions.drawAreaHeight + 6}`
         }, '')
-        this.gapLines.plot(gapLineDefinition).y(this.dimensions.drawAreaTop)
+        this.gapLines.plot(gapLineDefinition).y(dimensions.drawAreaTop)
         this.gapLinesContainer.show()
       }
     }

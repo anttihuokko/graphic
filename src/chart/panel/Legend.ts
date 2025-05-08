@@ -1,12 +1,12 @@
 import { Container, Text } from '@svgdotjs/svg.js'
 import { GraphicClickEvent } from '../../GraphicEvent'
 import { EventType } from '../Context'
-import { ChartElement } from '../element/ChartElement'
 import { Drawing } from './Drawing'
 import { PanelContext } from './PanelContext'
 import { Time } from '../../model/Time'
 import { Size } from '../../model/Size'
 import { ContainerFrame } from '../../element/ContainerFrame'
+import { GraphicElement } from '../../element/GraphicElement'
 
 class LegendItem extends ContainerFrame {
   private static readonly MARGIN1 = 5
@@ -73,7 +73,7 @@ class LegendItem extends ContainerFrame {
   }
 }
 
-export class Legend extends ChartElement<PanelContext> {
+export class Legend extends GraphicElement {
   private readonly itemContainer: Container
 
   private readonly label: Text
@@ -82,8 +82,12 @@ export class Legend extends ChartElement<PanelContext> {
 
   private minimized = false
 
-  constructor(drawings: Drawing[], parent: Container, context: PanelContext) {
-    super('chart-legend', parent, context)
+  constructor(
+    drawings: Drawing[],
+    parent: Container,
+    private readonly context: PanelContext
+  ) {
+    super('chart-legend', parent)
     this.itemContainer = this.container.group()
     this.label = this.container.text(drawings.length ? drawings[0].legendDef.label : '').move(10, 6)
     this.items = drawings.map((drawing) => new LegendItem(drawing, this.itemContainer))
